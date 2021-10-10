@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.recyclerview.widget.LinearLayoutManager
 import ie.wit.theyappyappy.R
 import ie.wit.theyappyappy.main.MainApp
@@ -20,6 +21,7 @@ class WalkListActivity : AppCompatActivity(), WalkListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        installSplashScreen()
         binding = ActivityWalkListBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.toolbar.title = title

@@ -27,6 +27,10 @@ class WalkActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setTheme(R.style.Theme_AppSplash)
+        i("Theme details 1 : " + getApplication().getTheme())
+        setTheme(R.style.Theme_TheYappyAppy)
+        i("Theme details 2 : " + getApplication().getTheme())
         binding = ActivityWalkBinding.inflate(layoutInflater)
         setContentView(binding.root)
         registerImagePickerCallback()
@@ -37,7 +41,7 @@ class WalkActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbarAdd)
 
         var edit = false
-        if (intent.hasExtra("placemark_edit")) {
+        if (intent.hasExtra("walk_edit")) {
             edit = true
             walk = intent.extras?.getParcelable("walk_edit")!!
             binding.walkTitle.setText(walk.title)

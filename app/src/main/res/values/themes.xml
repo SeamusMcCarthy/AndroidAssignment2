@@ -1,4 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+
     <!-- Base application theme. -->
     <style name="Theme.TheYappyAppy" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
@@ -12,5 +13,12 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+    </style>
+
+    <style name="Theme.AppSplash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@drawable/ic_launcher_doodle_background</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_doodle_foreground</item>
+        <item name="windowSplashScreenAnimationDuration">2000</item>
+        <item name="postSplashScreenTheme">@style/Theme.MaterialComponents.DayNight.NoActionBar</item>
     </style>
 </resources>
