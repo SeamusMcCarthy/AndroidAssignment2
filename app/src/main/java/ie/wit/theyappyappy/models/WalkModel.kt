@@ -8,5 +8,5 @@ import kotlinx.parcelize.Parcelize
 data class WalkModel(var id: Long = 0,
                      var title: String = "",
                      var description: String = "",
-//                     var type: Boolean,
+                     var type: String = "",
                      var image: Uri = Uri.EMPTY) : Parcelable

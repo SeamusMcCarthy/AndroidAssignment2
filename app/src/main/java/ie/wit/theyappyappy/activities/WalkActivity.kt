@@ -49,7 +49,11 @@ class WalkActivity : AppCompatActivity() {
             walk = intent.extras?.getParcelable("walk_edit")!!
             binding.walkTitle.setText(walk.title)
             binding.description.setText(walk.description)
-
+            if(binding.radioBeach.text.equals(walk.type)) {
+                binding.radioBeach.isChecked = true
+            } else {
+                binding.radioPark.isChecked = true
+            }
             binding.btnAdd.setText(R.string.button_saveWalk)
             Picasso.get()
                 .load(walk.image)
@@ -68,8 +72,8 @@ class WalkActivity : AppCompatActivity() {
             walk.description = binding.description.text.toString()
 
             val selectedOption: Int= binding.radioGroup1!!.checkedRadioButtonId
-            val text = findViewById<RadioButton>(selectedOption).text
-            i("Selected option  = $text" )
+            walk.type = findViewById<RadioButton>(selectedOption).text.toString()
+//            i("Selected option  = $text" )
             if (walk.title.isNotEmpty()) {
                 if (edit) {
                     app.walks.update(walk.copy())

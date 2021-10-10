@@ -22,8 +22,8 @@ class WalkAdapter constructor(private var walks: List<WalkModel>,
     }
 
     override fun onBindViewHolder(holder: MainHolder, position: Int) {
-        val placemark = walks[holder.adapterPosition]
-        holder.bind(placemark, listener)
+        val walk = walks[holder.adapterPosition]
+        holder.bind(walk, listener)
     }
 
     override fun getItemCount(): Int = walks.size
