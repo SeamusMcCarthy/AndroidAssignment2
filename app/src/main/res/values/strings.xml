@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">TheYappyAppy</string>
+    <string name="button_addWalk">Add Walk</string>
+    <string name="button_saveWalk">Save Walk</string>
+    <string name="hint_walkTitle">Walk Title</string>
+    <string name="hint_walkDescription">Description </string>
+    <string name="menu_addWalk">Add</string>
+    <string name="menu_cancelWalk">Cancel</string>
+    <string name="enter_title">Please Enter a title</string>
+    <string name="button_addImage"> Add Image </string>
+    <string name="select_walkImage">Select walk image</string>
+    <string name="beach">Beach</string>
+    <string name="park">Park</string>
 </resources>
