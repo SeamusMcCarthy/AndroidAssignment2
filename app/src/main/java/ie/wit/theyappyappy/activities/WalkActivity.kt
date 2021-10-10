@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.RadioButton
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,10 +29,11 @@ class WalkActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setTheme(R.style.Theme_AppSplash)
-        i("Theme details 1 : " + getApplication().getTheme())
+        // Was seeing errors where app crashed as soon as I opened this activity. Traced it back to an issue with
+        // AppBarLayout. Theme didn't seem to be resetting via .postSplashScreenTheme so had to force reset it to original
+        // layout.
         setTheme(R.style.Theme_TheYappyAppy)
-        i("Theme details 2 : " + getApplication().getTheme())
+//        i("Theme details 2 : " + getApplication().getTheme())
         binding = ActivityWalkBinding.inflate(layoutInflater)
         setContentView(binding.root)
         registerImagePickerCallback()
@@ -46,6 +49,7 @@ class WalkActivity : AppCompatActivity() {
             walk = intent.extras?.getParcelable("walk_edit")!!
             binding.walkTitle.setText(walk.title)
             binding.description.setText(walk.description)
+
             binding.btnAdd.setText(R.string.button_saveWalk)
             Picasso.get()
                 .load(walk.image)
@@ -62,6 +66,10 @@ class WalkActivity : AppCompatActivity() {
         binding.btnAdd.setOnClickListener() {
             walk.title = binding.walkTitle.text.toString()
             walk.description = binding.description.text.toString()
+
+            val selectedOption: Int= binding.radioGroup1!!.checkedRadioButtonId
+            val text = findViewById<RadioButton>(selectedOption).text
+            i("Selected option  = $text" )
             if (walk.title.isNotEmpty()) {
                 if (edit) {
                     app.walks.update(walk.copy())
@@ -117,5 +125,24 @@ class WalkActivity : AppCompatActivity() {
                     RESULT_CANCELED -> { } else -> { }
                 }
             }
+    }
+
+    fun onRadioButtonClicked(view: View) {
+        if (view is RadioButton) {
+            // Is the button now checked?
+            val checked = view.isChecked
+
+            // Check which radio button was clicked
+            when (view.getId()) {
+                R.id.radio_beach ->
+                    if (checked) {
+                        // Pirates are the best
+                    }
+                R.id.radio_park ->
+                    if (checked) {
+                        // Ninjas rule
+                    }
+            }
+        }
     }
 }

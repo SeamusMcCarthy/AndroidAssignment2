@@ -43,7 +43,7 @@
                 <EditText
                     android:id="@+id/walkTitle"
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
+                    android:layout_height="48dp"
                     android:layout_margin="8dp"
 
                     android:hint="@string/hint_walkTitle"
@@ -63,9 +63,37 @@
                     android:inputType="text"
                     android:maxLength="25"
                     android:maxLines="1"
+                    android:minHeight="48dp"
                     android:padding="8dp"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="14sp" />
+
+                <RadioGroup
+                    android:id="@+id/radioGroup1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RadioButton
+                        android:id="@+id/radio_beach"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="48dp"
+                        android:onClick="onRadioButtonClicked"
+                        android:text="@string/beach"
+                        app:layout_constraintBaseline_toBaselineOf="@+id/radio_park"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <RadioButton
+                        android:id="@+id/radio_park"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="48dp"
+                        android:onClick="onRadioButtonClicked"
+                        android:text="@string/park"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/radio_beach" />
+                </RadioGroup>
 
                 <Button
                     android:id="@+id/chooseImage"
@@ -73,11 +101,11 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
                     android:background="@color/colorAccent"
-                    android:paddingBottom="8dp"
                     android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
                     android:text="@string/button_addImage"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="16sp"/>
+                    android:textColor="#212121"
+                    android:textSize="16sp" />
 
                 <ImageView
                     android:id="@+id/walkImage"
@@ -95,7 +123,7 @@
                     android:paddingBottom="8dp"
                     android:stateListAnimator="@null"
                     android:text="@string/button_addWalk"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="#212121"
                     android:textSize="16sp" />
 
             </LinearLayout>
