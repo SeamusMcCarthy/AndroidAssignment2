@@ -49,6 +49,7 @@ class WalkActivity : AppCompatActivity() {
             walk = intent.extras?.getParcelable("walk_edit")!!
             binding.walkTitle.setText(walk.title)
             binding.description.setText(walk.description)
+            i("Selected re-entry " + walk.type)
             if(binding.radioBeach.text.equals(walk.type)) {
                 binding.radioBeach.isChecked = true
             } else {
@@ -73,7 +74,7 @@ class WalkActivity : AppCompatActivity() {
 
             val selectedOption: Int= binding.radioGroup1!!.checkedRadioButtonId
             walk.type = findViewById<RadioButton>(selectedOption).text.toString()
-//            i("Selected option  = $text" )
+//            i("Selected option  = " + walk.type )
             if (walk.title.isNotEmpty()) {
                 if (edit) {
                     app.walks.update(walk.copy())

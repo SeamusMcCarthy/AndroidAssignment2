@@ -20,6 +20,7 @@ class WalkMemStore : WalkStore {
         if (foundWalk != null) {
             foundWalk.title = walk.title
             foundWalk.description = walk.description
+            foundWalk.type = walk.type
             logAll()
         }
     }
