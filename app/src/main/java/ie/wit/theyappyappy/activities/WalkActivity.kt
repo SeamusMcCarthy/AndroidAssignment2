@@ -33,11 +33,9 @@ class WalkActivity : AppCompatActivity() {
         // AppBarLayout. Theme didn't seem to be resetting via .postSplashScreenTheme so had to force reset it to original
         // layout.
         setTheme(R.style.Theme_TheYappyAppy)
-//        i("Theme details 2 : " + getApplication().getTheme())
         binding = ActivityWalkBinding.inflate(layoutInflater)
         setContentView(binding.root)
         registerImagePickerCallback()
-
         app = application as MainApp
 
         binding.toolbarAdd.title = title
