@@ -3,60 +3,51 @@ package ie.wit.theyappyappy.activities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.widget.Toolbar
 import com.google.firebase.auth.FirebaseAuth
 import ie.wit.theyappyappy.R
+import ie.wit.theyappyappy.databinding.ActivityRegisterBinding
+import ie.wit.theyappyappy.main.MainApp
 
 class RegisterActivity : AppCompatActivity() {
 
-    private lateinit var toolbar: Toolbar
-    private lateinit var etEmail: EditText
-    private lateinit var etPassword: EditText
-    private lateinit var etConfirmPass: EditText
-    private lateinit var btnRegister: Button
-    private lateinit var txtLogin: TextView
+    private lateinit var binding: ActivityRegisterBinding
+    lateinit var app: MainApp
     private val mAuth = FirebaseAuth.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_register)
+        setTheme(R.style.Theme_TheYappyAppy)
+        binding = ActivityRegisterBinding.inflate(layoutInflater)
 
-        toolbar = findViewById(R.id.toolbar)
-        etEmail = findViewById(R.id.etEmail)
-        etPassword = findViewById(R.id.etPassword)
-        etConfirmPass = findViewById(R.id.etConfirmPass)
-        btnRegister = findViewById(R.id.btnRegister)
-        txtLogin = findViewById(R.id.txtLogin)
+        binding.toolbar.title = title
+        setSupportActionBar(binding.toolbar)
+        setContentView(binding.root)
+        app = application as MainApp
 
-        txtLogin.setOnClickListener {
+        binding.txtLogin.setOnClickListener {
             val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
             startActivity(intent)
             finish()
         }
 
-        val email = etEmail.text.toString()
-        val password = etPassword.text.toString()
-
-        btnRegister.setOnClickListener {
-            if (etEmail.length() == 0 || etPassword.length() == 0 || etConfirmPass.text.toString() != etPassword.text.toString()) {
-                if (etEmail.length() == 0) {
-                    etEmail.error = "Field can't be blank"
+        binding.btnRegister.setOnClickListener {
+            if (binding.etEmail.length() == 0 || binding.etPassword.length() == 0 ||
+                binding.etConfirmPass.text.toString() != binding.etPassword.text.toString()) {
+                if (binding.etEmail.length() == 0) {
+                    binding.etEmail.error = "Field can't be blank"
                 }
-                if (etPassword.length() == 0) {
-                    etPassword.error = "Field can't be blank"
+                if (binding.etPassword.length() == 0) {
+                    binding.etPassword.error = "Field can't be blank"
                 }
-                if (etConfirmPass.text.toString() != etPassword.text.toString()) {
-                    etConfirmPass.error = "Password didn't match"
+                if (binding.etConfirmPass.text.toString() != binding.etPassword.text.toString()) {
+                    binding.etConfirmPass.error = "Password didn't match"
                 }
             } else {
-                mAuth.createUserWithEmailAndPassword(email, password)
+                mAuth.createUserWithEmailAndPassword(binding.etEmail.text.toString(), binding.etPassword.text.toString())
                     .addOnCompleteListener(this) {task ->
                         if (task.isSuccessful) {
-                            val intent = Intent(this@RegisterActivity, WelcomeActivity::class.java)
+                            val intent = Intent(this@RegisterActivity, WalkListActivity::class.java)
                             startActivity(intent)
                             finish()
                         } else {
@@ -65,13 +56,11 @@ class RegisterActivity : AppCompatActivity() {
                     }
             }
         }
-
         setUpToolbar()
     }
 
     private fun setUpToolbar() {
-        setSupportActionBar(toolbar)
+        setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
     }
-
 }
