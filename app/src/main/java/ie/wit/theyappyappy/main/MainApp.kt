@@ -7,7 +7,7 @@ import timber.log.Timber.i
 
 class MainApp: Application() {
 
-    val walks = WalkMemStore()
+    lateinit var walks: WalkMemStore
 
     override fun onCreate() {
         super.onCreate()
