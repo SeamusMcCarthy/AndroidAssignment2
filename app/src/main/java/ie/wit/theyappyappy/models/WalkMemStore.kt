@@ -24,6 +24,9 @@ class WalkMemStore : WalkStore {
             foundWalk.bins_provided = walk.bins_provided
             foundWalk.lead_required = walk.lead_required
             foundWalk.length = walk.length
+            foundWalk.lat = walk.lat
+            foundWalk.lng = walk.lng
+            foundWalk.zoom = walk.zoom
             logAll()
         }
     }

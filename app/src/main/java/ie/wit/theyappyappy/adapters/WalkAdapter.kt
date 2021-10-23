@@ -3,6 +3,7 @@ package ie.wit.theyappyappy.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
 import ie.wit.theyappyappy.databinding.CardWalkBinding
 import ie.wit.theyappyappy.models.WalkModel
 
@@ -34,6 +35,7 @@ class WalkAdapter constructor(private var walks: List<WalkModel>,
         fun bind(walk: WalkModel, listener: WalkListener) {
             binding.walkTitle.text = walk.title
             binding.description.text = walk.description
+            Picasso.get().load(walk.image).resize(200,200).into(binding.imageIcon)
             binding.root.setOnClickListener { listener.onWalkClick(walk) }
         }
     }

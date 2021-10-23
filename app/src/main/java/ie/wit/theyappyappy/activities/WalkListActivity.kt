@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.recyclerview.widget.LinearLayoutManager
 import ie.wit.theyappyappy.R
@@ -18,6 +20,7 @@ class WalkListActivity : AppCompatActivity(), WalkListener {
 
     lateinit var app: MainApp
     private lateinit var binding: ActivityWalkListBinding
+    private lateinit var refreshIntentLauncher : ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +33,9 @@ class WalkListActivity : AppCompatActivity(), WalkListener {
 
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
-        binding.recyclerView.adapter = WalkAdapter(app.walks.findAll(), this)
+        loadWalks()
+
+        registerRefreshCallback()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -42,7 +47,7 @@ class WalkListActivity : AppCompatActivity(), WalkListener {
         when (item.itemId) {
             R.id.item_add -> {
                 val launcherIntent = Intent(this, WalkActivity::class.java)
-                startActivityForResult(launcherIntent,0)
+                refreshIntentLauncher.launch(launcherIntent)
             }
         }
         return super.onOptionsItemSelected(item)
@@ -51,12 +56,27 @@ class WalkListActivity : AppCompatActivity(), WalkListener {
     override fun onWalkClick(walk: WalkModel) {
         val launcherIntent = Intent(this, WalkActivity::class.java)
         launcherIntent.putExtra("walk_edit", walk)
-        startActivityForResult(launcherIntent,0)
+        refreshIntentLauncher.launch(launcherIntent)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        binding.recyclerView.adapter?.notifyDataSetChanged()
+//        super.onActivityResult(requestCode, resultCode, data)
+//    }
+
+    private fun loadWalks() {
+        showWalks(app.walks.findAll())
+    }
+
+    fun showWalks (walks: List<WalkModel>) {
+        binding.recyclerView.adapter = WalkAdapter(walks, this)
         binding.recyclerView.adapter?.notifyDataSetChanged()
-        super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    private fun registerRefreshCallback() {
+        refreshIntentLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+            { loadWalks() }
     }
 
 }

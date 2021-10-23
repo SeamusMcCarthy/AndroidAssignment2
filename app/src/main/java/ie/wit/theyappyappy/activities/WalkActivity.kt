@@ -1,6 +1,7 @@
 package ie.wit.theyappyappy.activities
 
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -17,6 +18,7 @@ import ie.wit.theyappyappy.R
 import ie.wit.theyappyappy.databinding.ActivityWalkBinding
 import ie.wit.theyappyappy.helpers.showImagePicker
 import ie.wit.theyappyappy.main.MainApp
+import ie.wit.theyappyappy.models.Location
 import ie.wit.theyappyappy.models.WalkModel
 import timber.log.Timber
 import timber.log.Timber.i
@@ -27,6 +29,8 @@ class WalkActivity : AppCompatActivity() {
     var walk = WalkModel()
     lateinit var app: MainApp
     private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
+    private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
+//    var location = Location(52.245696, -7.139102, 15f)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +41,7 @@ class WalkActivity : AppCompatActivity() {
         binding = ActivityWalkBinding.inflate(layoutInflater)
         setContentView(binding.root)
         registerImagePickerCallback()
+        registerMapCallback()
         app = application as MainApp
 
         binding.toolbarAdd.title = title
@@ -76,6 +81,9 @@ class WalkActivity : AppCompatActivity() {
             Picasso.get()
                 .load(walk.image)
                 .into(binding.walkImage)
+            if (walk.image != Uri.EMPTY) {
+                binding.chooseImage.setText(R.string.change_walkImage)
+            }
         } else {
             binding.btnAdd.setText(R.string.button_addWalk)
         }
@@ -121,6 +129,18 @@ class WalkActivity : AppCompatActivity() {
         binding.walkLocation.setOnClickListener {
             i ("Set Location Pressed")
         }
+
+        binding.walkLocation.setOnClickListener {
+            val location = Location(52.245696, -7.139102, 15f)
+            if (walk.zoom != 0f) {
+                location.lat = walk.lat
+                location.lng = walk.lng
+                location.zoom = walk.zoom
+            }
+            val launcherIntent = Intent(this, MapActivity::class.java)
+                .putExtra("location", location)
+            mapIntentLauncher.launch(launcherIntent)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -149,6 +169,7 @@ class WalkActivity : AppCompatActivity() {
                             Picasso.get()
                                 .load(walk.image)
                                 .into(binding.walkImage)
+                            binding.chooseImage.setText(R.string.change_walkImage)
                         } // end of if
                     }
                     RESULT_CANCELED -> { } else -> { }
@@ -173,5 +194,25 @@ class WalkActivity : AppCompatActivity() {
                     }
             }
         }
+    }
+
+    private fun registerMapCallback() {
+        mapIntentLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+            { result ->
+                when (result.resultCode) {
+                    RESULT_OK -> {
+                        if (result.data != null) {
+                            i("Got Location ${result.data.toString()}")
+                            val location = result.data!!.extras?.getParcelable<Location>("location")!!
+                            i("Location == $location")
+                            walk.lat = location.lat
+                            walk.lng = location.lng
+                            walk.zoom = location.zoom
+                        } // end of if
+                    }
+                    RESULT_CANCELED -> { } else -> { }
+                }
+            }
     }
 }
