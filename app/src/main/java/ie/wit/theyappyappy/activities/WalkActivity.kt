@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.RadioButton
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
@@ -41,18 +42,36 @@ class WalkActivity : AppCompatActivity() {
         binding.toolbarAdd.title = title
         setSupportActionBar(binding.toolbarAdd)
 
+        binding.lengthPicker.minValue = 1
+        binding.lengthPicker.maxValue = 30
         var edit = false
         if (intent.hasExtra("walk_edit")) {
             edit = true
             walk = intent.extras?.getParcelable("walk_edit")!!
             binding.walkTitle.setText(walk.title)
             binding.description.setText(walk.description)
+            binding.lengthPicker.isVisible = false
+//            binding.length.setText(walk.length)
             i("Selected re-entry " + walk.type)
             if(binding.radioBeach.text.equals(walk.type)) {
                 binding.radioBeach.isChecked = true
             } else {
                 binding.radioPark.isChecked = true
             }
+
+            if(binding.radioBinsYes.text.equals(walk.bins_provided)) {
+                binding.radioBinsYes.isChecked = true
+            } else {
+                binding.radioBinsNo.isChecked = true
+            }
+
+            if(binding.radioLeadYes.text.equals(walk.lead_required)) {
+                binding.radioLeadYes.isChecked = true
+            } else {
+                binding.radioLeadNo.isChecked = true
+            }
+
+
             binding.btnAdd.setText(R.string.button_saveWalk)
             Picasso.get()
                 .load(walk.image)
@@ -70,8 +89,15 @@ class WalkActivity : AppCompatActivity() {
             walk.title = binding.walkTitle.text.toString()
             walk.description = binding.description.text.toString()
 
-            val selectedOption: Int= binding.radioGroup1!!.checkedRadioButtonId
-            walk.type = findViewById<RadioButton>(selectedOption).text.toString()
+            val selectedOption1: Int= binding.radioGroup1.checkedRadioButtonId
+            walk.type = findViewById<RadioButton>(selectedOption1).text.toString()
+
+            val selectedOption2: Int= binding.radioGroup2.checkedRadioButtonId
+            walk.bins_provided = findViewById<RadioButton>(selectedOption2).text.toString()
+
+            val selectedOption3: Int= binding.radioGroup3.checkedRadioButtonId
+            walk.lead_required = findViewById<RadioButton>(selectedOption3).text.toString()
+
 //            i("Selected option  = " + walk.type )
             if (walk.title.isNotEmpty()) {
                 if (edit) {
@@ -89,11 +115,11 @@ class WalkActivity : AppCompatActivity() {
         }
 
         binding.chooseImage.setOnClickListener {
-            i("Select image")
+            showImagePicker(imageIntentLauncher)
         }
 
-        binding.chooseImage.setOnClickListener {
-            showImagePicker(imageIntentLauncher)
+        binding.walkLocation.setOnClickListener {
+            i ("Set Location Pressed")
         }
     }
 

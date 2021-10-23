@@ -21,6 +21,9 @@ class WalkMemStore : WalkStore {
             foundWalk.title = walk.title
             foundWalk.description = walk.description
             foundWalk.type = walk.type
+            foundWalk.bins_provided = walk.bins_provided
+            foundWalk.lead_required = walk.lead_required
+            foundWalk.length = walk.length
             logAll()
         }
     }
