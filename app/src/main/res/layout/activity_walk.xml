@@ -32,9 +32,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Add Walk"
+                    android:text="@string/add_walk"
                     android:textSize="20sp"
-                    android:textColor="#000"
+                    android:textColor="#FFF"
                     android:fontFamily="sans-serif" />
             </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.AppBarLayout>
@@ -95,7 +95,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="Type: "
+                        android:text="@string/type"
                         android:fontFamily="sans-serif" />
 
 
@@ -104,7 +104,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:minHeight="48dp"
-                        android:onClick="onRadioButtonClicked"
+
                         android:text="@string/beach"
                         app:layout_constraintBaseline_toBaselineOf="@+id/radio_park"
                         app:layout_constraintStart_toStartOf="parent" />
@@ -114,7 +114,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:minHeight="48dp"
-                        android:onClick="onRadioButtonClicked"
+
                         android:text="@string/park"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -137,7 +137,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="Bins provided: "
+                        android:text="@string/bins_provided"
                         android:fontFamily="sans-serif" />
 
 
@@ -146,7 +146,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:minHeight="48dp"
-                        android:onClick="onRadioButtonClicked"
+
                         android:text="@string/yes"
                         app:layout_constraintBaseline_toBaselineOf="@+id/radio_park"
                         app:layout_constraintStart_toStartOf="parent" />
@@ -156,7 +156,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:minHeight="48dp"
-                        android:onClick="onRadioButtonClicked"
+
                         android:text="@string/no"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -179,7 +179,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="Lead required: "
+                        android:text="@string/lead_required"
                         android:fontFamily="sans-serif" />
 
                     <RadioButton
@@ -187,7 +187,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:minHeight="48dp"
-                        android:onClick="onRadioButtonClicked"
+
                         android:text="@string/yes"
                         app:layout_constraintBaseline_toBaselineOf="@+id/radio_park"
                         app:layout_constraintStart_toStartOf="parent" />
@@ -197,12 +197,25 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:minHeight="48dp"
-                        android:onClick="onRadioButtonClicked"
+
                         android:text="@string/no"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/radio_beach" />
                 </RadioGroup>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/km"
+                    android:fontFamily="sans-serif"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.75"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.375"/>
 
                 <NumberPicker
                     android:id="@+id/lengthPicker"
@@ -238,20 +251,17 @@
                     app:layout_constraintTop_toTopOf="@+id/walkTitle"
                     app:layout_constraintVertical_bias="0.480"/>
 
-
-
-
-    <ImageView
-        android:id="@+id/walkImage"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.042"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/chooseImage"
-        app:layout_constraintVertical_bias="0.050"
-        app:srcCompat="@mipmap/ic_launcher" />
+                <ImageView
+                    android:id="@+id/walkImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.042"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/chooseImage"
+                    app:layout_constraintVertical_bias="0.050"
+                    app:srcCompat="@mipmap/ic_launcher" />
 
                 <Button
                     android:id="@+id/walkLocation"

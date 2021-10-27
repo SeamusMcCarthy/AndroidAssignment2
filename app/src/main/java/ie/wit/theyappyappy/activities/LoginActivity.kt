@@ -1,6 +1,5 @@
 package ie.wit.theyappyappy.activities
 
-
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -22,22 +21,15 @@ import ie.wit.theyappyappy.main.MainApp
 import timber.log.Timber
 import timber.log.Timber.i
 
-
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
     lateinit var app: MainApp
 
-//    private lateinit var toolbar1: Toolbar
-//    private lateinit var etEmail: EditText
-//    private lateinit var etPassword: EditText
-//    private lateinit var btnLogin: Button
-//    private lateinit var txtRegister: TextView
     private lateinit var mAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setTheme(R.style.Theme_TheYappyAppy)
         binding = ActivityLoginBinding.inflate(layoutInflater)
 
         binding.toolbar1.title = title
@@ -45,13 +37,7 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
         app = application as MainApp
 
-//        setContentView(R.layout.activity_login)
         mAuth = Firebase.auth
-//        etEmail = findViewById(R.id.etEmail)
-//        etPassword = findViewById(R.id.etPassword)
-//        btnLogin = findViewById(R.id.btnLogin)
-//        txtRegister = findViewById(R.id.txtRegister)
-//        toolbar1 = findViewById(R.id.toolbar1)
         setUpToolbar()
 
         binding.txtRegister.setOnClickListener {
@@ -59,9 +45,6 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
-
-//        val email = etEmail.text.toString()
-//        val password = etPassword.text.toString()
 
         binding.btnLogin.setOnClickListener {
             mAuth.signInWithEmailAndPassword(binding.etEmail.text.toString(), binding.etPassword.text.toString())
@@ -77,8 +60,6 @@ class LoginActivity : AppCompatActivity() {
                     }
                 }
         }
-
-
     }
 
     private fun setUpToolbar() {

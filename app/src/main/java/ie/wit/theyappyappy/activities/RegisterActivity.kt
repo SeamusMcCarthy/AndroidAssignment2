@@ -17,7 +17,7 @@ class RegisterActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setTheme(R.style.Theme_TheYappyAppy)
+//        setTheme(R.style.Theme_TheYappyAppy)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
 
         binding.toolbar.title = title

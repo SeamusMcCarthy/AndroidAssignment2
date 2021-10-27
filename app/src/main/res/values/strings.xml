@@ -21,4 +21,14 @@
     <string name="no">No</string>
     <string name="button_location">Set Location</string>
     <string name="title_activity_map">MapActivity</string>
+    <string name="bins_provided">Bins provided:</string>
+    <string name="lead_required">Lead required:</string>
+    <string name="km">KM:</string>
+    <string name="type">Type:</string>
+    <string name="add_walk">Add Walk</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="already_have_an_account">Already have an Account?</string>
+    <string name="click_here">Click Here</string>
+    <string name="sign_in">Sign In</string>
+    <string name="dont_have_an_account">Don\'t have an Account?</string>
 </resources>

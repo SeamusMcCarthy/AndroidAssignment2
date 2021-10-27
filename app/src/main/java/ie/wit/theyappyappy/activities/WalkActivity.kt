@@ -30,14 +30,13 @@ class WalkActivity : AppCompatActivity() {
     lateinit var app: MainApp
     private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
     private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
-//    var location = Location(52.245696, -7.139102, 15f)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // Was seeing errors where app crashed as soon as I opened this activity. Traced it back to an issue with
         // AppBarLayout. Theme didn't seem to be resetting via .postSplashScreenTheme so had to force reset it to original
         // layout.
-        setTheme(R.style.Theme_TheYappyAppy)
+//        setTheme(R.style.Theme_TheYappyAppy)
         binding = ActivityWalkBinding.inflate(layoutInflater)
         setContentView(binding.root)
         registerImagePickerCallback()
@@ -56,7 +55,7 @@ class WalkActivity : AppCompatActivity() {
             binding.walkTitle.setText(walk.title)
             binding.description.setText(walk.description)
             binding.lengthPicker.isVisible = false
-//            binding.length.setText(walk.length)
+
             i("Selected re-entry " + walk.type)
             if(binding.radioBeach.text.equals(walk.type)) {
                 binding.radioBeach.isChecked = true
@@ -106,7 +105,6 @@ class WalkActivity : AppCompatActivity() {
             val selectedOption3: Int= binding.radioGroup3.checkedRadioButtonId
             walk.lead_required = findViewById<RadioButton>(selectedOption3).text.toString()
 
-//            i("Selected option  = " + walk.type )
             if (walk.title.isNotEmpty()) {
                 if (edit) {
                     app.walks.update(walk.copy())
@@ -124,10 +122,6 @@ class WalkActivity : AppCompatActivity() {
 
         binding.chooseImage.setOnClickListener {
             showImagePicker(imageIntentLauncher)
-        }
-
-        binding.walkLocation.setOnClickListener {
-            i ("Set Location Pressed")
         }
 
         binding.walkLocation.setOnClickListener {
@@ -175,25 +169,6 @@ class WalkActivity : AppCompatActivity() {
                     RESULT_CANCELED -> { } else -> { }
                 }
             }
-    }
-
-    fun onRadioButtonClicked(view: View) {
-        if (view is RadioButton) {
-            // Is the button now checked?
-            val checked = view.isChecked
-
-            // Check which radio button was clicked
-            when (view.getId()) {
-                R.id.radio_beach ->
-                    if (checked) {
-                        // Pirates are the best
-                    }
-                R.id.radio_park ->
-                    if (checked) {
-                        // Ninjas rule
-                    }
-            }
-        }
     }
 
     private fun registerMapCallback() {

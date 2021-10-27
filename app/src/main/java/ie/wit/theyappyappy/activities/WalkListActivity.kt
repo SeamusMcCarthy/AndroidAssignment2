@@ -8,12 +8,15 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.recyclerview.widget.ItemTouchHelper
+//import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import ie.wit.theyappyappy.R
 import ie.wit.theyappyappy.main.MainApp
 import ie.wit.theyappyappy.adapters.WalkListener
 import ie.wit.theyappyappy.databinding.ActivityWalkListBinding
+import ie.wit.theyappyappy.helpers.GestureHelpers
 import ie.wit.theyappyappy.models.WalkModel
 
 class WalkListActivity : AppCompatActivity(), WalkListener {
@@ -24,7 +27,6 @@ class WalkListActivity : AppCompatActivity(), WalkListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        installSplashScreen()
         binding = ActivityWalkListBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.toolbar.title = title
@@ -34,7 +36,6 @@ class WalkListActivity : AppCompatActivity(), WalkListener {
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
         loadWalks()
-
         registerRefreshCallback()
     }
 
@@ -59,18 +60,34 @@ class WalkListActivity : AppCompatActivity(), WalkListener {
         refreshIntentLauncher.launch(launcherIntent)
     }
 
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        binding.recyclerView.adapter?.notifyDataSetChanged()
-//        super.onActivityResult(requestCode, resultCode, data)
-//    }
-
     private fun loadWalks() {
         showWalks(app.walks.findAll())
     }
 
-    fun showWalks (walks: List<WalkModel>) {
+    fun showWalks (walks: ArrayList<WalkModel>) {
+
         binding.recyclerView.adapter = WalkAdapter(walks, this)
         binding.recyclerView.adapter?.notifyDataSetChanged()
+        val swipeGesture = object : GestureHelpers(this) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                when(direction){
+                    ItemTouchHelper.LEFT -> {
+                        app.walks.delete(walks[viewHolder.adapterPosition])
+                        binding.recyclerView.adapter?.notifyItemRemoved(viewHolder.adapterPosition)
+                    }
+                    ItemTouchHelper.RIGHT -> {
+                        val archiveItem = walks[viewHolder.adapterPosition]
+                        app.walks.delete(walks[viewHolder.adapterPosition])
+                        binding.recyclerView.adapter?.notifyItemRemoved(viewHolder.adapterPosition)
+                        app.walks.create(archiveItem)
+                        binding.recyclerView.adapter?.notifyItemInserted(walks.size)
+                    }
+                }
+            }
+        }
+        val touchHelper= ItemTouchHelper(swipeGesture)
+        touchHelper.attachToRecyclerView(binding.recyclerView)
+
     }
 
     private fun registerRefreshCallback() {

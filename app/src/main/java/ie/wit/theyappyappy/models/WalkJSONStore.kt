@@ -8,6 +8,7 @@ import ie.wit.theyappyappy.helpers.*
 import timber.log.Timber
 import java.lang.reflect.Type
 import java.util.*
+import kotlin.collections.ArrayList
 
 const val JSON_FILE = "walks.json"
 val gsonBuilder: Gson = GsonBuilder().setPrettyPrinting()
@@ -21,15 +22,15 @@ fun generateRandomId(): Long {
 
 class WalkJSONStore(private val context: Context) : WalkStore {
 
-    var walks = mutableListOf<WalkModel>()
-
+//    var walks = mutableListOf<WalkModel>()
+        var walks = ArrayList<WalkModel>()
     init {
         if (exists(context, JSON_FILE)) {
             deserialize()
         }
     }
 
-    override fun findAll(): MutableList<WalkModel> {
+    override fun findAll(): ArrayList<WalkModel> {
         logAll()
         return walks
     }
@@ -42,7 +43,25 @@ class WalkJSONStore(private val context: Context) : WalkStore {
 
 
     override fun update(walk: WalkModel) {
-        // todo
+        val walksList = findAll()
+        var foundWalk: WalkModel? = walksList.find { w -> w.id == walk.id }
+        if (foundWalk != null) {
+            foundWalk.title = walk.title
+            foundWalk.description = walk.description
+            foundWalk.image = walk.image
+            foundWalk.lat = walk.lat
+            foundWalk.lng = walk.lng
+            foundWalk.zoom = walk.zoom
+            foundWalk.bins_provided = walk.bins_provided
+            foundWalk.lead_required = walk.lead_required
+            foundWalk.length = walk.length
+        }
+        serialize()
+    }
+
+    override fun delete(walk: WalkModel) {
+        walks.remove(walk)
+        serialize()
     }
 
     private fun serialize() {

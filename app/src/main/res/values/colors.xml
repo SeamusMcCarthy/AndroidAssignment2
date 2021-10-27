@@ -10,4 +10,6 @@
     <color name="colorPrimary">#ED2173</color>
     <color name="colorPrimaryDark">#222934</color>
     <color name="colorAccent">#ED2173</color>
+    <color name="deleteColor">#DD3124</color>
+    <color name="archiveColor">#3AE015</color>
 </resources>
