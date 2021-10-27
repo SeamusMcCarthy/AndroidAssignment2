@@ -7,7 +7,7 @@ class WalkMemStore : WalkStore {
 
     val walks = ArrayList<WalkModel>()
 
-    override fun findAll(): List<WalkModel> {
+    override fun findAll(): ArrayList<WalkModel> {
         return walks
     }
 
@@ -21,8 +21,18 @@ class WalkMemStore : WalkStore {
             foundWalk.title = walk.title
             foundWalk.description = walk.description
             foundWalk.type = walk.type
+            foundWalk.bins_provided = walk.bins_provided
+            foundWalk.lead_required = walk.lead_required
+            foundWalk.length = walk.length
+            foundWalk.lat = walk.lat
+            foundWalk.lng = walk.lng
+            foundWalk.zoom = walk.zoom
             logAll()
         }
+    }
+
+    override fun delete(walk: WalkModel) {
+        walks.remove(walk)
     }
 
     fun logAll() {
