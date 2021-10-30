@@ -1,6 +1,7 @@
 package ie.wit.theyappyappy.activities
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -8,10 +9,14 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.RadioButton
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import ie.wit.theyappyappy.R
@@ -30,6 +35,9 @@ class WalkActivity : AppCompatActivity() {
     lateinit var app: MainApp
     private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
     private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
+    lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+    var lat = 0.0;
+    var lng = 0.0;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +50,9 @@ class WalkActivity : AppCompatActivity() {
         registerImagePickerCallback()
         registerMapCallback()
         app = application as MainApp
+
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+        fetchLocation()
 
         binding.toolbarAdd.title = title
         setSupportActionBar(binding.toolbarAdd)
@@ -125,7 +136,9 @@ class WalkActivity : AppCompatActivity() {
         }
 
         binding.walkLocation.setOnClickListener {
-            val location = Location(52.245696, -7.139102, 15f)
+            fetchLocation()
+            val location = Location(lat, lng, 15f)
+//            val location = Location(52.245696, -7.139102, 15f)
             if (walk.zoom != 0f) {
                 location.lat = walk.lat
                 location.lng = walk.lng
@@ -149,6 +162,23 @@ class WalkActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun fetchLocation() {
+        val task = fusedLocationProviderClient.lastLocation
+
+        if(ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+            && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), 101)
+            return
+        }
+        task.addOnSuccessListener {
+            if(it != null) {
+//                Toast.makeText(applicationContext, "${it.latitude} ${it.longitude}", Toast.LENGTH_SHORT).show()
+                lat = it.latitude
+                lng = it.longitude
+            }
+        }
     }
 
     private fun registerImagePickerCallback() {
