@@ -50,7 +50,7 @@ abstract class GestureHelpers(context: Context) : ItemTouchHelper.SimpleCallback
             .addSwipeRightActionIcon(archiveIcon)
             .create()
             .decorate()
-        super.onChildDraw(c, recyclerView!!, viewHolder!!, dX, dY, actionState, isCurrentlyActive)
+        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
     }
 
 }
