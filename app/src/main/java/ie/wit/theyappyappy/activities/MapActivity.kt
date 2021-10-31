@@ -37,11 +37,12 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerD
         map = googleMap
         val loc = LatLng(location.lat, location.lng)
         val options = MarkerOptions()
-            .title("Placemark")
+            .title("Walk")
             .snippet("GPS : $loc")
             .draggable(true)
             .position(loc)
         map.addMarker(options)
+        map.uiSettings.isZoomControlsEnabled = true
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, location.zoom))
         map.setOnMarkerDragListener(this)
         map.setOnMarkerClickListener(this)

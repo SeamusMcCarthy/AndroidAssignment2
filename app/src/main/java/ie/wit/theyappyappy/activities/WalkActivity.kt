@@ -1,5 +1,6 @@
 package ie.wit.theyappyappy.activities
 
+import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -7,16 +8,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.RadioButton
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
+//import com.google.android.gms.location.FusedLocationProviderClient
+//import com.google.android.gms.location.LocationServices
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import ie.wit.theyappyappy.R
@@ -25,7 +24,6 @@ import ie.wit.theyappyappy.helpers.showImagePicker
 import ie.wit.theyappyappy.main.MainApp
 import ie.wit.theyappyappy.models.Location
 import ie.wit.theyappyappy.models.WalkModel
-import timber.log.Timber
 import timber.log.Timber.i
 
 class WalkActivity : AppCompatActivity() {
@@ -35,24 +33,17 @@ class WalkActivity : AppCompatActivity() {
     lateinit var app: MainApp
     private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
     private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
-    lateinit var fusedLocationProviderClient: FusedLocationProviderClient
-    var lat = 0.0;
-    var lng = 0.0;
+//    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Was seeing errors where app crashed as soon as I opened this activity. Traced it back to an issue with
-        // AppBarLayout. Theme didn't seem to be resetting via .postSplashScreenTheme so had to force reset it to original
-        // layout.
-//        setTheme(R.style.Theme_TheYappyAppy)
         binding = ActivityWalkBinding.inflate(layoutInflater)
         setContentView(binding.root)
         registerImagePickerCallback()
         registerMapCallback()
         app = application as MainApp
 
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
-        fetchLocation()
+//        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
 
         binding.toolbarAdd.title = title
         setSupportActionBar(binding.toolbarAdd)
@@ -98,11 +89,6 @@ class WalkActivity : AppCompatActivity() {
             binding.btnAdd.setText(R.string.button_addWalk)
         }
 
-//      Removed Timber plant from here as it's now planted in MainApp
-//        Timber.plant(Timber.DebugTree())
-        i("Walk Activity started...")
-
-
         binding.btnAdd.setOnClickListener() {
             walk.title = binding.walkTitle.text.toString()
             walk.description = binding.description.text.toString()
@@ -136,9 +122,9 @@ class WalkActivity : AppCompatActivity() {
         }
 
         binding.walkLocation.setOnClickListener {
-            fetchLocation()
-            val location = Location(lat, lng, 15f)
-//            val location = Location(52.245696, -7.139102, 15f)
+//            fetchLocation()
+//            val location = Location(app.mLat, app.mLng, 15f)
+            val location = Location(52.245696, -7.139102, 15f)
             if (walk.zoom != 0f) {
                 location.lat = walk.lat
                 location.lng = walk.lng
@@ -164,22 +150,24 @@ class WalkActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun fetchLocation() {
-        val task = fusedLocationProviderClient.lastLocation
-
-        if(ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-            && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), 101)
-            return
-        }
-        task.addOnSuccessListener {
-            if(it != null) {
-//                Toast.makeText(applicationContext, "${it.latitude} ${it.longitude}", Toast.LENGTH_SHORT).show()
-                lat = it.latitude
-                lng = it.longitude
-            }
-        }
-    }
+//    private fun fetchLocation() {
+//        val task = fusedLocationProviderClient.lastLocation
+//        if(ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+//            && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), 101)
+//            return
+//        }
+//
+//        task.addOnSuccessListener {
+//            if(it != null) {
+//               Toast.makeText(applicationContext, "${it.latitude} ${it.longitude}", Toast.LENGTH_SHORT).show()
+////                lastLocation = location
+////                val currentLatLong = LatLng(location.latitude, location.longitude)
+//                app.mLat = it.latitude
+//                app.mLng = it.longitude
+//            }
+//        }
+//    }
 
     private fun registerImagePickerCallback() {
         imageIntentLauncher =
