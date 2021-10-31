@@ -14,8 +14,8 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.view.isVisible
-//import com.google.android.gms.location.FusedLocationProviderClient
-//import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import ie.wit.theyappyappy.R
@@ -33,7 +33,7 @@ class WalkActivity : AppCompatActivity() {
     lateinit var app: MainApp
     private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
     private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
-//    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +43,7 @@ class WalkActivity : AppCompatActivity() {
         registerMapCallback()
         app = application as MainApp
 
-//        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
 
         binding.toolbarAdd.title = title
         setSupportActionBar(binding.toolbarAdd)
@@ -122,17 +122,7 @@ class WalkActivity : AppCompatActivity() {
         }
 
         binding.walkLocation.setOnClickListener {
-//            fetchLocation()
-//            val location = Location(app.mLat, app.mLng, 15f)
-            val location = Location(52.245696, -7.139102, 15f)
-            if (walk.zoom != 0f) {
-                location.lat = walk.lat
-                location.lng = walk.lng
-                location.zoom = walk.zoom
-            }
-            val launcherIntent = Intent(this, MapActivity::class.java)
-                .putExtra("location", location)
-            mapIntentLauncher.launch(launcherIntent)
+            fetchLocation()
         }
     }
 
@@ -150,24 +140,30 @@ class WalkActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-//    private fun fetchLocation() {
-//        val task = fusedLocationProviderClient.lastLocation
-//        if(ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-//            && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), 101)
-//            return
-//        }
-//
-//        task.addOnSuccessListener {
-//            if(it != null) {
+    private fun fetchLocation() {
+        val task = fusedLocationProviderClient.lastLocation
+        if(ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+            && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), 101)
+            return
+        }
+
+        task.addOnSuccessListener {
+            if(it != null) {
 //               Toast.makeText(applicationContext, "${it.latitude} ${it.longitude}", Toast.LENGTH_SHORT).show()
-////                lastLocation = location
-////                val currentLatLong = LatLng(location.latitude, location.longitude)
-//                app.mLat = it.latitude
-//                app.mLng = it.longitude
-//            }
-//        }
-//    }
+                val location = Location(it.latitude, it.longitude, 15f)
+//            val location = Location(52.245696, -7.139102, 15f)
+                if (walk.zoom != 0f) {
+                    location.lat = walk.lat
+                    location.lng = walk.lng
+                    location.zoom = walk.zoom
+                }
+                val launcherIntent = Intent(this, MapActivity::class.java)
+                    .putExtra("location", location)
+                mapIntentLauncher.launch(launcherIntent)
+            }
+        }
+    }
 
     private fun registerImagePickerCallback() {
         imageIntentLauncher =
