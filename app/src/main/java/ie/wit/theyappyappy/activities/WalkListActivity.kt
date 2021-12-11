@@ -24,6 +24,7 @@ class WalkListActivity : AppCompatActivity(), WalkListener {
     lateinit var app: MainApp
     private lateinit var binding: ActivityWalkListBinding
     private lateinit var refreshIntentLauncher : ActivityResultLauncher<Intent>
+    private lateinit var mapsIntentLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +38,7 @@ class WalkListActivity : AppCompatActivity(), WalkListener {
         binding.recyclerView.layoutManager = layoutManager
         loadWalks()
         registerRefreshCallback()
+        registerMapCallback()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -48,6 +50,10 @@ class WalkListActivity : AppCompatActivity(), WalkListener {
         when (item.itemId) {
             R.id.item_add -> {
                 val launcherIntent = Intent(this, WalkActivity::class.java)
+                refreshIntentLauncher.launch(launcherIntent)
+            }
+            R.id.item_map -> {
+                val launcherIntent = Intent(this, WalkMapsActivity::class.java)
                 refreshIntentLauncher.launch(launcherIntent)
             }
         }
@@ -94,6 +100,12 @@ class WalkListActivity : AppCompatActivity(), WalkListener {
         refreshIntentLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult())
             { loadWalks() }
+    }
+
+    private fun registerMapCallback() {
+        refreshIntentLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+            {  }
     }
 
 }

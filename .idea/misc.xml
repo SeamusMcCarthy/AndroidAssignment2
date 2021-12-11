@@ -22,6 +22,16 @@
         <entry key="..\:/WIT-Android-Dev/Assignment1/app/src/main/res/menu/menu_main.xml" value="0.36666666666666664" />
         <entry key="..\:/WIT-Android-Dev/Assignment1/app/src/main/res/menu/menu_walk.xml" value="0.36666666666666664" />
         <entry key="..\:/WIT-Android-Dev/Assignment1/app/src/main/res/mipmap-anydpi-v26/ic_launcher_doodle.xml" value="0.22135416666666666" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.14764492753623187" />
+        <entry key="app/src/main/res/layout/activity_map.xml" value="0.14764492753623187" />
+        <entry key="app/src/main/res/layout/activity_register.xml" value="0.14764492753623187" />
+        <entry key="app/src/main/res/layout/activity_splash_screen.xml" value="0.14764492753623187" />
+        <entry key="app/src/main/res/layout/activity_walk.xml" value="0.14764492753623187" />
+        <entry key="app/src/main/res/layout/activity_walk_list.xml" value="0.14764492753623187" />
+        <entry key="app/src/main/res/layout/activity_walk_maps.xml" value="0.14764492753623187" />
+        <entry key="app/src/main/res/layout/card_walk.xml" value="0.14764492753623187" />
+        <entry key="app/src/main/res/layout/content_walk_maps.xml" value="0.22" />
+        <entry key="app/src/main/res/menu/menu_main.xml" value="0.21197916666666666" />
       </map>
     </option>
   </component>
