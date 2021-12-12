@@ -18,6 +18,7 @@ import ie.wit.theyappyappy.adapters.WalkListener
 import ie.wit.theyappyappy.databinding.ActivityWalkListBinding
 import ie.wit.theyappyappy.helpers.GestureHelpers
 import ie.wit.theyappyappy.models.WalkModel
+import timber.log.Timber.i
 
 class WalkListActivity : AppCompatActivity(), WalkListener {
 
@@ -71,7 +72,6 @@ class WalkListActivity : AppCompatActivity(), WalkListener {
     }
 
     fun showWalks (walks: ArrayList<WalkModel>) {
-
         binding.recyclerView.adapter = WalkAdapter(walks, this)
         binding.recyclerView.adapter?.notifyDataSetChanged()
         val swipeGesture = object : GestureHelpers(this) {
@@ -93,17 +93,18 @@ class WalkListActivity : AppCompatActivity(), WalkListener {
         }
         val touchHelper= ItemTouchHelper(swipeGesture)
         touchHelper.attachToRecyclerView(binding.recyclerView)
-
     }
 
     private fun registerRefreshCallback() {
+        i("In here")
+
         refreshIntentLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult())
             { loadWalks() }
     }
 
     private fun registerMapCallback() {
-        refreshIntentLauncher =
+        mapsIntentLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult())
             {  }
     }
