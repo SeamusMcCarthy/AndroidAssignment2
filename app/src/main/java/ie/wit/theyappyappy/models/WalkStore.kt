@@ -5,4 +5,5 @@ interface WalkStore {
     fun create(walk: WalkModel)
     fun update(walk: WalkModel)
     fun delete(walk: WalkModel)
+    fun findById(id:Long) : WalkModel?
 }

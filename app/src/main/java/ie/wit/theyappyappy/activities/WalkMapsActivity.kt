@@ -12,6 +12,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.squareup.picasso.Picasso
 import ie.wit.theyappyappy.R
 import ie.wit.theyappyappy.databinding.ActivityWalkMapsBinding
 import ie.wit.theyappyappy.databinding.ContentWalkMapsBinding
@@ -82,8 +83,16 @@ class WalkMapsActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListener {
     }
 
     override fun onMarkerClick(marker: Marker): Boolean {
-        contentBinding.currentTitle.text = marker.title
-        return false
+//        contentBinding.currentTitle.text = marker.title
+        val tag = marker.tag as Long
+        val walk = app.walks.findById(tag)
+        contentBinding.currentTitle.text = walk!!.title
+        contentBinding.currentDescription.text = walk!!.description
+//        contentBinding.imageView2.setImageBitmap(readImageFromPath(this@WalkMapsActivity, walk.image))
+        Picasso.get()
+            .load(walk.image)
+            .into(contentBinding.imageView2)
+        return true
     }
 
 }

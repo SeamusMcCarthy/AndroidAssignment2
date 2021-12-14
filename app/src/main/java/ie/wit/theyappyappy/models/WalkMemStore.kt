@@ -38,4 +38,9 @@ class WalkMemStore : WalkStore {
     fun logAll() {
         walks.forEach{ i("${it}") }
     }
+
+    override fun findById(id:Long) : WalkModel? {
+        val foundWalk: WalkModel? = walks.find { it.id == id }
+        return foundWalk
+    }
 }

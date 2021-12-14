@@ -41,6 +41,13 @@ class WalkJSONStore(private val context: Context) : WalkStore {
         serialize()
     }
 
+    override fun findById(id:Long) : WalkModel? {
+        val walksList = findAll()
+        var foundWalk: WalkModel? = walksList.find { w -> w.id == id }
+//        val foundWalk: WalkModel? = walks.find { it.id == id }
+        return foundWalk
+    }
+
 
     override fun update(walk: WalkModel) {
         val walksList = findAll()
