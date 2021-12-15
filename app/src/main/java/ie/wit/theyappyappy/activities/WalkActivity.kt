@@ -150,9 +150,8 @@ class WalkActivity : AppCompatActivity() {
 
         task.addOnSuccessListener {
             if(it != null) {
-//               Toast.makeText(applicationContext, "${it.latitude} ${it.longitude}", Toast.LENGTH_SHORT).show()
                 val location = Location(it.latitude, it.longitude, 15f)
-//            val location = Location(52.245696, -7.139102, 15f)
+
                 if (walk.zoom != 0f) {
                     location.lat = walk.lat
                     location.lng = walk.lng

@@ -31,6 +31,8 @@
         <entry key="app/src/main/res/layout/activity_walk_maps.xml" value="0.14764492753623187" />
         <entry key="app/src/main/res/layout/card_walk.xml" value="0.14764492753623187" />
         <entry key="app/src/main/res/layout/content_walk_maps.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/fragment_first.xml" value="0.17916666666666667" />
+        <entry key="app/src/main/res/layout/fragment_second.xml" value="0.17916666666666667" />
         <entry key="app/src/main/res/menu/menu_main.xml" value="0.21197916666666666" />
       </map>
     </option>

@@ -9,10 +9,8 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import ie.wit.theyappyappy.activities.LoginActivity
 import ie.wit.theyappyappy.activities.RegisterActivity
-import ie.wit.theyappyappy.activities.WalkListActivity
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.junit.Assert.*
 
 /**
  * Instrumented test, which will execute on an Android device.

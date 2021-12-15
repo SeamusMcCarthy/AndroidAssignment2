@@ -29,7 +29,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".activities.MapActivity"
+            android:name=".views.editlocation.EditLocationView"
             android:exported="false"
             android:label="@string/title_activity_map" />
         <activity
@@ -46,12 +46,12 @@
             android:name=".activities.RegisterActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.WalkListActivity"
+            android:name=".views.walklist.WalkListView"
             android:exported="true" />
         <activity
             android:name=".activities.LoginActivity"
             android:exported="true" />
-        <activity android:name=".activities.WalkActivity" />
+        <activity android:name=".views.walk.WalkView" />
     </application>
 
 </manifest>

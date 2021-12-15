@@ -5,9 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
-import ie.wit.theyappyappy.R
 import ie.wit.theyappyappy.databinding.ActivityRegisterBinding
 import ie.wit.theyappyappy.main.MainApp
+import ie.wit.theyappyappy.views.walklist.WalkListView
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -47,7 +47,7 @@ class RegisterActivity : AppCompatActivity() {
                 mAuth.createUserWithEmailAndPassword(binding.etEmail.text.toString(), binding.etPassword.text.toString())
                     .addOnCompleteListener(this) {task ->
                         if (task.isSuccessful) {
-                            val intent = Intent(this@RegisterActivity, WalkListActivity::class.java)
+                            val intent = Intent(this@RegisterActivity, WalkListView::class.java)
                             startActivity(intent)
                             finish()
                         } else {
