@@ -23,7 +23,6 @@ class WalkPresenter(private val view: WalkView) {
 
     init {
         if (view.intent.hasExtra("walk_edit")) {
-            i("In here")
             edit = true
             walk = view.intent.extras?.getParcelable("walk_edit")!!
             view.showWalk(walk)
@@ -38,27 +37,24 @@ class WalkPresenter(private val view: WalkView) {
         walk.length = length
         walk.bins_provided = bins_provided
         walk.lead_required = lead_required
-        i("In doAddOrSave : " + walk_type)
+
         walk.type = walk_type
         if (edit) {
             app.walks.update(walk)
         } else {
             app.walks.create(walk)
         }
-
         view.finish()
 
     }
 
     fun doCancel() {
         view.finish()
-
     }
 
     fun doDelete() {
         app.walks.delete(walk)
         view.finish()
-
     }
 
     fun doSelectImage() {
@@ -96,7 +92,6 @@ class WalkPresenter(private val view: WalkView) {
                     }
                     AppCompatActivity.RESULT_CANCELED -> { } else -> { }
                 }
-
             }
     }
 
@@ -117,7 +112,6 @@ class WalkPresenter(private val view: WalkView) {
                     }
                     AppCompatActivity.RESULT_CANCELED -> { } else -> { }
                 }
-
             }
     }
 }

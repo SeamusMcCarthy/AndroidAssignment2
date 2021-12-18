@@ -22,7 +22,6 @@ class WalkView : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
         binding = ActivityWalkBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.toolbarAdd.title = title
@@ -72,8 +71,6 @@ class WalkView : AppCompatActivity() {
                     val selectedOption3: Int= binding.radioGroup3.checkedRadioButtonId
                     val lead_required = findViewById<RadioButton>(selectedOption3).text.toString()
 
-                    i("Walk type = " + walk_type)
-
                     presenter.doAddOrSave(binding.walkTitle.text.toString(), binding.description.text.toString(), binding.lengthPicker.value, walk_type, bins_provided, lead_required)
                 }
             }
@@ -96,8 +93,6 @@ class WalkView : AppCompatActivity() {
             binding.lengthPicker.value = 0
         }
 
-
-        i("Selected re-entry " + walk.type)
         if(binding.radioBeach.text.equals(walk.type)) {
             binding.radioBeach.isChecked = true
         } else {
@@ -117,14 +112,12 @@ class WalkView : AppCompatActivity() {
         }
 
 
-//        binding.btnAdd.setText(R.string.button_saveWalk)
         Picasso.get()
             .load(walk.image)
             .into(binding.walkImage)
         if (walk.image != Uri.EMPTY) {
             binding.chooseImage.setText(R.string.change_walkImage)
         }
-
     }
 
     fun updateImage(image: Uri){
