@@ -51,7 +51,9 @@
         <activity
             android:name=".activities.LoginActivity"
             android:exported="true" />
-        <activity android:name=".views.walk.WalkView" />
+        <activity
+            android:name=".views.walk.WalkView"
+            android:label="@string/add_walk" />
     </application>
 
 </manifest>

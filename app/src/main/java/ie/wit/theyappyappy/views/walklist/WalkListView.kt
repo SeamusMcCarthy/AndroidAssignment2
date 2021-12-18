@@ -12,6 +12,7 @@ import ie.wit.theyappyappy.databinding.ActivityWalkListBinding
 import ie.wit.theyappyappy.main.MainApp
 import ie.wit.theyappyappy.models.WalkModel
 import ie.wit.theyappyappy.views.walklist.WalkListPresenter
+import timber.log.Timber
 
 class WalkListView : AppCompatActivity(), WalkListener {
     lateinit var app: MainApp
@@ -49,6 +50,13 @@ class WalkListView : AppCompatActivity(), WalkListener {
     override fun onWalkClick(walk: WalkModel) {
         presenter.doEditWalk(walk)
 
+    }
+
+    override fun onResume() {
+        //update the view
+        binding.recyclerView.adapter?.notifyDataSetChanged()
+        Timber.i("recyclerView onResume")
+        super.onResume()
     }
 
     private fun loadWalks() {

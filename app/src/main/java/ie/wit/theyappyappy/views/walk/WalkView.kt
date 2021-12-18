@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.RadioButton
+import androidx.core.view.isVisible
+import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import ie.wit.theyappyappy.R
 import ie.wit.theyappyappy.databinding.ActivityWalkBinding
@@ -24,6 +27,8 @@ class WalkView : AppCompatActivity() {
         setContentView(binding.root)
         binding.toolbarAdd.title = title
         setSupportActionBar(binding.toolbarAdd)
+        binding.lengthPicker.minValue = 0
+        binding.lengthPicker.maxValue = 30
 
         presenter = WalkPresenter(this)
 
@@ -36,7 +41,6 @@ class WalkView : AppCompatActivity() {
             presenter.cacheWalk(binding.walkTitle.text.toString(), binding.description.text.toString())
             presenter.doSetLocation()
         }
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -53,14 +57,26 @@ class WalkView : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-//            R.id.item_save -> {
-//                if (binding.placemarkTitle.text.toString().isEmpty()) {
-//                    Snackbar.make(binding.root, R.string.enter_placemark_title, Snackbar.LENGTH_LONG)
-//                        .show()
-//                } else {
-//                    presenter.doAddOrSave(binding.placemarkTitle.text.toString(), binding.description.text.toString())
-//                }
-//            }
+            R.id.item_save -> {
+                if (binding.walkTitle.text.toString().isEmpty()) {
+                    Snackbar.make(binding.root, R.string.enter_title, Snackbar.LENGTH_LONG)
+                        .show()
+                } else {
+
+                    val selectedOption1: Int= binding.radioGroup1.checkedRadioButtonId
+                    val walk_type = findViewById<RadioButton>(selectedOption1).text.toString()
+
+                    val selectedOption2: Int= binding.radioGroup2.checkedRadioButtonId
+                    val bins_provided = findViewById<RadioButton>(selectedOption2).text.toString()
+
+                    val selectedOption3: Int= binding.radioGroup3.checkedRadioButtonId
+                    val lead_required = findViewById<RadioButton>(selectedOption3).text.toString()
+
+                    i("Walk type = " + walk_type)
+
+                    presenter.doAddOrSave(binding.walkTitle.text.toString(), binding.description.text.toString(), binding.lengthPicker.value, walk_type, bins_provided, lead_required)
+                }
+            }
 //            R.id.item_delete -> {
 //                presenter.doDelete()
 //            }
@@ -74,7 +90,34 @@ class WalkView : AppCompatActivity() {
     fun showWalk(walk: WalkModel) {
         binding.walkTitle.setText(walk.title)
         binding.description.setText(walk.description)
+        if (walk.length > 0) {
+            binding.lengthPicker.value = walk.length
+        } else {
+            binding.lengthPicker.value = 0
+        }
 
+
+        i("Selected re-entry " + walk.type)
+        if(binding.radioBeach.text.equals(walk.type)) {
+            binding.radioBeach.isChecked = true
+        } else {
+            binding.radioPark.isChecked = true
+        }
+
+        if(binding.radioBinsYes.text.equals(walk.bins_provided)) {
+            binding.radioBinsYes.isChecked = true
+        } else {
+            binding.radioBinsNo.isChecked = true
+        }
+
+        if(binding.radioLeadYes.text.equals(walk.lead_required)) {
+            binding.radioLeadYes.isChecked = true
+        } else {
+            binding.radioLeadNo.isChecked = true
+        }
+
+
+//        binding.btnAdd.setText(R.string.button_saveWalk)
         Picasso.get()
             .load(walk.image)
             .into(binding.walkImage)

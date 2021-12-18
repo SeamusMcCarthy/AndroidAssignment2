@@ -11,6 +11,7 @@ import ie.wit.theyappyappy.models.WalkModel
 import ie.wit.theyappyappy.helpers.showImagePicker
 import ie.wit.theyappyappy.views.editlocation.EditLocationView
 import timber.log.Timber
+import timber.log.Timber.i
 
 class WalkPresenter(private val view: WalkView) {
     var walk = WalkModel()
@@ -21,18 +22,24 @@ class WalkPresenter(private val view: WalkView) {
     var edit = false;
 
     init {
-        if (view.intent.hasExtra("walk")) {
+        if (view.intent.hasExtra("walk_edit")) {
+            i("In here")
             edit = true
-            walk = view.intent.extras?.getParcelable("walk")!!
+            walk = view.intent.extras?.getParcelable("walk_edit")!!
             view.showWalk(walk)
         }
         registerImagePickerCallback()
         registerMapCallback()
     }
 
-    fun doAddOrSave(title: String, description: String) {
+    fun doAddOrSave(title: String, description: String, length: Int, walk_type: String, bins_provided: String, lead_required: String ) {
         walk.title = title
         walk.description = description
+        walk.length = length
+        walk.bins_provided = bins_provided
+        walk.lead_required = lead_required
+        i("In doAddOrSave : " + walk_type)
+        walk.type = walk_type
         if (edit) {
             app.walks.update(walk)
         } else {

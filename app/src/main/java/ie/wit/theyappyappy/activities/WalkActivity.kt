@@ -78,7 +78,7 @@ class WalkActivity : AppCompatActivity() {
             }
 
 
-            binding.btnAdd.setText(R.string.button_saveWalk)
+//            binding.btnAdd.setText(R.string.button_saveWalk)
             Picasso.get()
                 .load(walk.image)
                 .into(binding.walkImage)
@@ -86,36 +86,36 @@ class WalkActivity : AppCompatActivity() {
                 binding.chooseImage.setText(R.string.change_walkImage)
             }
         } else {
-            binding.btnAdd.setText(R.string.button_addWalk)
+//            binding.btnAdd.setText(R.string.button_addWalk)
         }
 
-        binding.btnAdd.setOnClickListener() {
-            walk.title = binding.walkTitle.text.toString()
-            walk.description = binding.description.text.toString()
-
-            val selectedOption1: Int= binding.radioGroup1.checkedRadioButtonId
-            walk.type = findViewById<RadioButton>(selectedOption1).text.toString()
-
-            val selectedOption2: Int= binding.radioGroup2.checkedRadioButtonId
-            walk.bins_provided = findViewById<RadioButton>(selectedOption2).text.toString()
-
-            val selectedOption3: Int= binding.radioGroup3.checkedRadioButtonId
-            walk.lead_required = findViewById<RadioButton>(selectedOption3).text.toString()
-
-            if (walk.title.isNotEmpty()) {
-                if (edit) {
-                    app.walks.update(walk.copy())
-                } else {
-                    app.walks.create(walk.copy())
-                }
-                setResult(RESULT_OK)
-                finish()
-            }
-            else {
-                Snackbar.make(it,R.string.enter_title, Snackbar.LENGTH_LONG)
-                    .show()
-            }
-        }
+//        binding.btnAdd.setOnClickListener() {
+//            walk.title = binding.walkTitle.text.toString()
+//            walk.description = binding.description.text.toString()
+//
+//            val selectedOption1: Int= binding.radioGroup1.checkedRadioButtonId
+//            walk.type = findViewById<RadioButton>(selectedOption1).text.toString()
+//
+//            val selectedOption2: Int= binding.radioGroup2.checkedRadioButtonId
+//            walk.bins_provided = findViewById<RadioButton>(selectedOption2).text.toString()
+//
+//            val selectedOption3: Int= binding.radioGroup3.checkedRadioButtonId
+//            walk.lead_required = findViewById<RadioButton>(selectedOption3).text.toString()
+//
+//            if (walk.title.isNotEmpty()) {
+//                if (edit) {
+//                    app.walks.update(walk.copy())
+//                } else {
+//                    app.walks.create(walk.copy())
+//                }
+//                setResult(RESULT_OK)
+//                finish()
+//            }
+//            else {
+//                Snackbar.make(it,R.string.enter_title, Snackbar.LENGTH_LONG)
+//                    .show()
+//            }
+//        }
 
         binding.chooseImage.setOnClickListener {
             showImagePicker(imageIntentLauncher)
