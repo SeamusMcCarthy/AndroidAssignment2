@@ -7,6 +7,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.RadioButton
 import androidx.core.view.isVisible
+import com.google.android.gms.maps.GoogleMap
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import ie.wit.theyappyappy.R
@@ -17,6 +18,7 @@ import timber.log.Timber.i
 class WalkView : AppCompatActivity() {
     private lateinit var binding: ActivityWalkBinding
     private lateinit var presenter: WalkPresenter
+    lateinit var map: GoogleMap
     var walk = WalkModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,6 +30,11 @@ class WalkView : AppCompatActivity() {
         setSupportActionBar(binding.toolbarAdd)
         binding.lengthPicker.minValue = 0
         binding.lengthPicker.maxValue = 30
+        binding.mapView2.onCreate(savedInstanceState)
+        binding.mapView2.getMapAsync{
+            map = it
+            presenter.doConfigureMap(map)
+        }
 
         presenter = WalkPresenter(this)
 
@@ -126,5 +133,30 @@ class WalkView : AppCompatActivity() {
             .load(image)
             .into(binding.walkImage)
         binding.chooseImage.setText(R.string.change_walkImage)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding.mapView2.onDestroy()
+    }
+
+    override fun onLowMemory() {
+        super.onLowMemory()
+        binding.mapView2.onLowMemory()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        binding.mapView2.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.mapView2.onResume()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        binding.mapView2.onSaveInstanceState(outState)
     }
 }

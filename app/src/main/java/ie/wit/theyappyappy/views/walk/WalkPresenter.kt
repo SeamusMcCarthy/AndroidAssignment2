@@ -1,10 +1,18 @@
 package ie.wit.theyappyappy.views.walk
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import ie.wit.theyappyappy.databinding.ActivityWalkBinding
+import ie.wit.theyappyappy.helpers.checkLocationPermissions
 import ie.wit.theyappyappy.main.MainApp
 import ie.wit.theyappyappy.models.Location
 import ie.wit.theyappyappy.models.WalkModel
@@ -20,15 +28,27 @@ class WalkPresenter(private val view: WalkView) {
     private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
     private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
     var edit = false;
+    var map: GoogleMap? = null
+    private val location = Location(52.245696, -7.139102, 15f)
+    var locationService: FusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(view)
+    private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
 
     init {
+        doPermissionLauncher()
+        registerImagePickerCallback()
+        registerMapCallback()
         if (view.intent.hasExtra("walk_edit")) {
             edit = true
             walk = view.intent.extras?.getParcelable("walk_edit")!!
             view.showWalk(walk)
+        } else {
+
+            if (checkLocationPermissions(view)) {
+                doSetCurrentLocation()
+            }
+            walk.lng = location.lng
+            walk.lat = location.lat
         }
-        registerImagePickerCallback()
-        registerMapCallback()
     }
 
     fun doAddOrSave(title: String, description: String, length: Int, walk_type: String, bins_provided: String, lead_required: String ) {
@@ -62,11 +82,12 @@ class WalkPresenter(private val view: WalkView) {
     }
 
     fun doSetLocation() {
-        val location = Location(52.245696, -7.139102, 15f)
+//        val location = Location(52.245696, -7.139102, 15f)
         if (walk.zoom != 0f) {
             location.lat =  walk.lat
             location.lng = walk.lng
             location.zoom = walk.zoom
+            locationUpdate(walk.lat, walk.lng)
         }
         val launcherIntent = Intent(view, EditLocationView::class.java)
             .putExtra("location", location)
@@ -114,4 +135,46 @@ class WalkPresenter(private val view: WalkView) {
                 }
             }
     }
+
+    fun doConfigureMap(m: GoogleMap) {
+        map = m
+        locationUpdate(walk.lat, walk.lng)
+    }
+
+    fun locationUpdate(lat: Double, lng: Double) {
+        walk.lat = lat
+        walk.lng = lng
+        i("lat & lng " + lat + ' ' + lng)
+        walk.zoom = 15f
+        map?.clear()
+        map?.uiSettings?.setZoomControlsEnabled(true)
+        val options = MarkerOptions().title(walk.title).position(LatLng(walk.lat, walk.lng))
+        map?.addMarker(options)
+        map?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(walk.lat, walk.lng), walk.zoom))
+        view?.showWalk(walk)
+    }
+
+    private fun doPermissionLauncher() {
+        i("permission check called")
+        requestPermissionLauncher =
+            view.registerForActivityResult(ActivityResultContracts.RequestPermission())
+            { isGranted: Boolean ->
+                if (isGranted) {
+                    doSetCurrentLocation()
+                } else {
+                    locationUpdate(location.lat, location.lng)
+                }
+            }
+    }
+
+    @SuppressLint("MissingPermission")
+    fun doSetCurrentLocation() {
+        i("setting location from doSetLocation")
+        locationService.lastLocation.addOnSuccessListener {
+            i("Last location : " + it.latitude + ' ' + it.longitude)
+            locationUpdate(it.latitude, it.longitude)
+        }
+    }
+
+
 }
