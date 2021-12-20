@@ -4,11 +4,14 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import ie.wit.theyappyappy.R
 import ie.wit.theyappyappy.adapters.WalkAdapter
 import ie.wit.theyappyappy.adapters.WalkListener
 import ie.wit.theyappyappy.databinding.ActivityWalkListBinding
+import ie.wit.theyappyappy.helpers.GestureHelpers
 import ie.wit.theyappyappy.main.MainApp
 import ie.wit.theyappyappy.models.WalkModel
 import ie.wit.theyappyappy.views.walklist.WalkListPresenter
@@ -62,5 +65,25 @@ class WalkListView : AppCompatActivity(), WalkListener {
     private fun loadWalks() {
         binding.recyclerView.adapter = WalkAdapter(presenter.getWalks(), this)
         binding.recyclerView.adapter?.notifyDataSetChanged()
+        val swipeGesture = object : GestureHelpers(this) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                when(direction){
+                    ItemTouchHelper.LEFT -> {
+                        app.walks.delete(presenter.getWalks()[viewHolder.adapterPosition])
+                        binding.recyclerView.adapter?.notifyItemRemoved(viewHolder.adapterPosition)
+                    }
+                    ItemTouchHelper.RIGHT -> {
+                        val archiveItem = presenter.getWalks()[viewHolder.adapterPosition]
+                        app.walks.delete(presenter.getWalks()[viewHolder.adapterPosition])
+                        binding.recyclerView.adapter?.notifyItemRemoved(viewHolder.adapterPosition)
+                        app.walks.create(archiveItem)
+                        binding.recyclerView.adapter?.notifyItemInserted(presenter.getWalks().size)
+                    }
+                }
+            }
+        }
+        val touchHelper= ItemTouchHelper(swipeGesture)
+        touchHelper.attachToRecyclerView(binding.recyclerView)
+
     }
 }
