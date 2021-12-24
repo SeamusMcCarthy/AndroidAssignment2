@@ -19,7 +19,7 @@
         tools:targetApi="p">
 
         <activity
-            android:name=".activities.WalkMapsActivity"
+            android:name=".views.map.WalkMapView"
             android:exported="true"
             android:label="@string/title_activity_walk_maps"
             android:theme="@style/Theme.TheYappyAppy.NoActionBar" />

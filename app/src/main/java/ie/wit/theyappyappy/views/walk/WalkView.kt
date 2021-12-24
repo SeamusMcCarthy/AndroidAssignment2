@@ -13,6 +13,9 @@ import com.squareup.picasso.Picasso
 import ie.wit.theyappyappy.R
 import ie.wit.theyappyappy.databinding.ActivityWalkBinding
 import ie.wit.theyappyappy.models.WalkModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import timber.log.Timber.i
 
 class WalkView : AppCompatActivity() {
@@ -39,25 +42,41 @@ class WalkView : AppCompatActivity() {
         presenter = WalkPresenter(this)
 
         binding.chooseImage.setOnClickListener {
-            presenter.cacheWalk(binding.walkTitle.text.toString(), binding.description.text.toString())
+            val selectedOption1: Int= binding.radioGroup1.checkedRadioButtonId
+            val walk_type = findViewById<RadioButton>(selectedOption1).text.toString()
+
+            val selectedOption2: Int= binding.radioGroup2.checkedRadioButtonId
+            val bins_provided = findViewById<RadioButton>(selectedOption2).text.toString()
+
+            val selectedOption3: Int= binding.radioGroup3.checkedRadioButtonId
+            val lead_required = findViewById<RadioButton>(selectedOption3).text.toString()
+            presenter.cacheWalk(binding.walkTitle.text.toString(), binding.description.text.toString(), binding.lengthPicker.value, walk_type, bins_provided, lead_required)
             presenter.doSelectImage()
         }
 
         binding.walkLocation.setOnClickListener {
-            presenter.cacheWalk(binding.walkTitle.text.toString(), binding.description.text.toString())
+            val selectedOption1: Int= binding.radioGroup1.checkedRadioButtonId
+            val walk_type = findViewById<RadioButton>(selectedOption1).text.toString()
+
+            val selectedOption2: Int= binding.radioGroup2.checkedRadioButtonId
+            val bins_provided = findViewById<RadioButton>(selectedOption2).text.toString()
+
+            val selectedOption3: Int= binding.radioGroup3.checkedRadioButtonId
+            val lead_required = findViewById<RadioButton>(selectedOption3).text.toString()
+            presenter.cacheWalk(binding.walkTitle.text.toString(), binding.description.text.toString(), binding.lengthPicker.value, walk_type, bins_provided, lead_required)
             presenter.doSetLocation()
         }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_walk, menu)
-//        val deleteMenu: MenuItem = menu.findItem(R.id.item_delete)
-//        if (presenter.edit){
-//            deleteMenu.setVisible(true)
-//        }
-//        else{
-//            deleteMenu.setVisible(false)
-//        }
+        val deleteMenu: MenuItem = menu.findItem(R.id.item_delete)
+        if (presenter.edit){
+            deleteMenu.setVisible(true)
+        }
+        else{
+            deleteMenu.setVisible(false)
+        }
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -77,13 +96,23 @@ class WalkView : AppCompatActivity() {
 
                     val selectedOption3: Int= binding.radioGroup3.checkedRadioButtonId
                     val lead_required = findViewById<RadioButton>(selectedOption3).text.toString()
-
-                    presenter.doAddOrSave(binding.walkTitle.text.toString(), binding.description.text.toString(), binding.lengthPicker.value, walk_type, bins_provided, lead_required)
+                    GlobalScope.launch(Dispatchers.IO) {
+                        presenter.doAddOrSave(
+                            binding.walkTitle.text.toString(),
+                            binding.description.text.toString(),
+                            binding.lengthPicker.value,
+                            walk_type,
+                            bins_provided,
+                            lead_required
+                        )
+                    }
                 }
             }
-//            R.id.item_delete -> {
-//                presenter.doDelete()
-//            }
+            R.id.item_delete -> {
+                GlobalScope.launch(Dispatchers.IO) {
+                    presenter.doDelete()
+                }
+            }
             R.id.item_cancel -> {
                 presenter.doCancel()
             }

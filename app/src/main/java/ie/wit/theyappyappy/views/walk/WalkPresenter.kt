@@ -37,6 +37,7 @@ class WalkPresenter(private val view: WalkView) {
         doPermissionLauncher()
         registerImagePickerCallback()
         registerMapCallback()
+
         if (view.intent.hasExtra("walk_edit")) {
             edit = true
             walk = view.intent.extras?.getParcelable("walk_edit")!!
@@ -51,7 +52,7 @@ class WalkPresenter(private val view: WalkView) {
         }
     }
 
-    fun doAddOrSave(title: String, description: String, length: Int, walk_type: String, bins_provided: String, lead_required: String ) {
+    suspend fun doAddOrSave(title: String, description: String, length: Int, walk_type: String, bins_provided: String, lead_required: String ) {
         walk.title = title
         walk.description = description
         walk.length = length
@@ -72,7 +73,7 @@ class WalkPresenter(private val view: WalkView) {
         view.finish()
     }
 
-    fun doDelete() {
+    suspend fun doDelete() {
         app.walks.delete(walk)
         view.finish()
     }
@@ -93,9 +94,14 @@ class WalkPresenter(private val view: WalkView) {
             .putExtra("location", location)
         mapIntentLauncher.launch(launcherIntent)
     }
-    fun cacheWalk (title: String, description: String) {
+    fun cacheWalk (title: String, description: String, length: Int, walk_type: String, bins_provided: String, lead_required: String) {
         walk.title = title;
         walk.description = description
+        walk.length = length
+        walk.bins_provided = bins_provided
+        walk.lead_required = lead_required
+
+        walk.type = walk_type
     }
 
     private fun registerImagePickerCallback() {

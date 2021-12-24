@@ -11,7 +11,7 @@ interface WalkListener {
     fun onWalkClick(walk: WalkModel)
 }
 
-class WalkAdapter constructor(private var walks: ArrayList<WalkModel>,
+class WalkAdapter constructor(private var walks: List<WalkModel>,
                                    private val listener: WalkListener) :
     RecyclerView.Adapter<WalkAdapter.MainHolder>() {
 

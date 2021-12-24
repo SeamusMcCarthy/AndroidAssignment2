@@ -8,21 +8,26 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ie.wit.theyappyappy.R
-import ie.wit.theyappyappy.adapters.WalkAdapter
-import ie.wit.theyappyappy.adapters.WalkListener
+import ie.wit.theyappyappy.views.walklist.WalkAdapter
+import ie.wit.theyappyappy.views.walklist.WalkListener
 import ie.wit.theyappyappy.databinding.ActivityWalkListBinding
 import ie.wit.theyappyappy.helpers.GestureHelpers
 import ie.wit.theyappyappy.main.MainApp
 import ie.wit.theyappyappy.models.WalkModel
 import ie.wit.theyappyappy.views.walklist.WalkListPresenter
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class WalkListView : AppCompatActivity(), WalkListener {
+
     lateinit var app: MainApp
-    private lateinit var binding: ActivityWalkListBinding
+    lateinit var binding: ActivityWalkListBinding
     lateinit var presenter: WalkListPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         binding = ActivityWalkListBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -58,32 +63,35 @@ class WalkListView : AppCompatActivity(), WalkListener {
     override fun onResume() {
         //update the view
         binding.recyclerView.adapter?.notifyDataSetChanged()
+        loadWalks()
         Timber.i("recyclerView onResume")
         super.onResume()
     }
 
     private fun loadWalks() {
-        binding.recyclerView.adapter = WalkAdapter(presenter.getWalks(), this)
-        binding.recyclerView.adapter?.notifyDataSetChanged()
-        val swipeGesture = object : GestureHelpers(this) {
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                when(direction){
-                    ItemTouchHelper.LEFT -> {
-                        app.walks.delete(presenter.getWalks()[viewHolder.adapterPosition])
-                        binding.recyclerView.adapter?.notifyItemRemoved(viewHolder.adapterPosition)
-                    }
-                    ItemTouchHelper.RIGHT -> {
-                        val archiveItem = presenter.getWalks()[viewHolder.adapterPosition]
-                        app.walks.delete(presenter.getWalks()[viewHolder.adapterPosition])
-                        binding.recyclerView.adapter?.notifyItemRemoved(viewHolder.adapterPosition)
-                        app.walks.create(archiveItem)
-                        binding.recyclerView.adapter?.notifyItemInserted(presenter.getWalks().size)
-                    }
-                }
-            }
+        GlobalScope.launch(Dispatchers.Main) {
+            binding.recyclerView.adapter = WalkAdapter(presenter.getWalks(), this@WalkListView)
         }
-        val touchHelper= ItemTouchHelper(swipeGesture)
-        touchHelper.attachToRecyclerView(binding.recyclerView)
+        binding.recyclerView.adapter?.notifyDataSetChanged()
+//        val swipeGesture = object : GestureHelpers(this) {
+//            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+//                when(direction){
+//                    ItemTouchHelper.LEFT -> {
+//                        app.walks.delete(presenter.getWalks()[viewHolder.adapterPosition])
+//                        binding.recyclerView.adapter?.notifyItemRemoved(viewHolder.adapterPosition)
+//                    }
+//                    ItemTouchHelper.RIGHT -> {
+//                        val archiveItem = presenter.getWalks()[viewHolder.adapterPosition]
+//                        app.walks.delete(presenter.getWalks()[viewHolder.adapterPosition])
+//                        binding.recyclerView.adapter?.notifyItemRemoved(viewHolder.adapterPosition)
+//                        app.walks.create(archiveItem)
+//                        binding.recyclerView.adapter?.notifyItemInserted(presenter.getWalks().size)
+//                    }
+//                }
+//            }
+//        }
+//        val touchHelper= ItemTouchHelper(swipeGesture)
+//        touchHelper.attachToRecyclerView(binding.recyclerView)
 
     }
 }

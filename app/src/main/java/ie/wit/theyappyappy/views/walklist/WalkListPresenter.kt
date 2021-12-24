@@ -3,10 +3,13 @@ package ie.wit.theyappyappy.views.walklist
 import android.content.Intent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import ie.wit.theyappyappy.activities.WalkMapsActivity
 import ie.wit.theyappyappy.views.walk.WalkView
 import ie.wit.theyappyappy.main.MainApp
 import ie.wit.theyappyappy.models.WalkModel
+import ie.wit.theyappyappy.views.map.WalkMapView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class WalkListPresenter(val view: WalkListView) {
     var app: MainApp
@@ -19,7 +22,7 @@ class WalkListPresenter(val view: WalkListView) {
         registerRefreshCallback()
     }
 
-    fun getWalks() = app.walks.findAll()
+    suspend fun getWalks() = app.walks.findAll()
 
     fun doAddWalk() {
         val launcherIntent = Intent(view, WalkView::class.java)
@@ -33,13 +36,15 @@ class WalkListPresenter(val view: WalkListView) {
     }
 
     fun doShowWalksMap() {
-        val launcherIntent = Intent(view, WalkMapsActivity::class.java)
+        val launcherIntent = Intent(view, WalkMapView::class.java)
         refreshIntentLauncher.launch(launcherIntent)
     }
     private fun registerRefreshCallback() {
         refreshIntentLauncher =
             view.registerForActivityResult(ActivityResultContracts.StartActivityForResult())
-            { getWalks() }
+            { GlobalScope.launch(Dispatchers.Main)
+                { getWalks() }
+            }
     }
     private fun registerMapCallback() {
         mapIntentLauncher =

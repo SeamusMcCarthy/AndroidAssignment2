@@ -37,5 +37,6 @@
     <string name="second_fragment_label">Second Fragment</string>
 
     <string name="menu_saveWalk">Save</string>
+    <string name="menu_deleteWalk">Delete</string>
 
 </resources>

@@ -7,15 +7,15 @@ class WalkMemStore : WalkStore {
 
     val walks = ArrayList<WalkModel>()
 
-    override fun findAll(): ArrayList<WalkModel> {
+    override suspend fun findAll(): ArrayList<WalkModel> {
         return walks
     }
 
-    override fun create(walk: WalkModel) {
+    override suspend fun create(walk: WalkModel) {
         walks.add(walk)
     }
 
-    override fun update(walk: WalkModel) {
+    override suspend fun update(walk: WalkModel) {
         var foundWalk: WalkModel? = walks.find { w -> w.id == walk.id }
         if (foundWalk != null) {
             foundWalk.title = walk.title
@@ -31,7 +31,7 @@ class WalkMemStore : WalkStore {
         }
     }
 
-    override fun delete(walk: WalkModel) {
+    override suspend fun delete(walk: WalkModel) {
         walks.remove(walk)
     }
 
@@ -39,7 +39,7 @@ class WalkMemStore : WalkStore {
         walks.forEach{ i("${it}") }
     }
 
-    override fun findById(id:Long) : WalkModel? {
+    override suspend fun findById(id:Long) : WalkModel? {
         val foundWalk: WalkModel? = walks.find { it.id == id }
         return foundWalk
     }

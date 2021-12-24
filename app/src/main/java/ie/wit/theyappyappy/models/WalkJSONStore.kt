@@ -30,25 +30,25 @@ class WalkJSONStore(private val context: Context) : WalkStore {
         }
     }
 
-    override fun findAll(): ArrayList<WalkModel> {
+    override suspend fun findAll(): ArrayList<WalkModel> {
         logAll()
         return walks
     }
 
-    override fun create(walk: WalkModel) {
+    override suspend fun create(walk: WalkModel) {
         walk.id = generateRandomId()
         walks.add(walk)
         serialize()
     }
 
-    override fun findById(id:Long) : WalkModel? {
+    override suspend fun findById(id:Long) : WalkModel? {
         val walksList = findAll()
         var foundWalk: WalkModel? = walksList.find { w -> w.id == id }
         return foundWalk
     }
 
 
-    override fun update(walk: WalkModel) {
+    override suspend fun update(walk: WalkModel) {
         val walksList = findAll()
         var foundWalk: WalkModel? = walksList.find { w -> w.id == walk.id }
         if (foundWalk != null) {
@@ -66,7 +66,7 @@ class WalkJSONStore(private val context: Context) : WalkStore {
         serialize()
     }
 
-    override fun delete(walk: WalkModel) {
+    override suspend fun delete(walk: WalkModel) {
         walks.remove(walk)
         serialize()
     }
