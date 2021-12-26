@@ -10,9 +10,10 @@ import ie.wit.theyappyappy.views.map.WalkMapView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import timber.log.Timber.i
 
 class WalkListPresenter(val view: WalkListView) {
-    var app: MainApp
+    var app: MainApp = view.application as MainApp
     private lateinit var refreshIntentLauncher : ActivityResultLauncher<Intent>
     private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
 
@@ -23,6 +24,27 @@ class WalkListPresenter(val view: WalkListView) {
     }
 
     suspend fun getWalks() = app.walks.findAll()
+
+    suspend fun deleteWalk(walk: WalkModel) {
+        i("In Delete function - Walk Title = " + walk.title)
+        try {
+            app.walks.delete(walk)
+        } catch (e: Exception) {
+            i("Problem with delete : " + e.message )
+        }
+
+    }
+
+    suspend fun createWalk(walk: WalkModel) {
+        i("In Create function - Walk Title = " + walk.title)
+        try {
+            walk.id = 0
+            app.walks.create(walk)
+        } catch (e: Exception) {
+            i("Problem with create : " + e.message )
+        }
+
+    }
 
     fun doAddWalk() {
         val launcherIntent = Intent(view, WalkView::class.java)
