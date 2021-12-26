@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/walkListLayout"
-    tools:context="ie.wit.theyappyappy.activities.WalkListActivity">
+    tools:context="ie.wit.theyappyappy.views.walklist.WalkListView">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"

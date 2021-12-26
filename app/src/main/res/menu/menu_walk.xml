@@ -3,6 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/item_delete"
+        android:title="@string/menu_deleteWalk"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/item_save"
+        android:title="@string/menu_saveWalk"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/item_cancel"
         android:title="@string/menu_cancelWalk"
         app:showAsAction="always" />

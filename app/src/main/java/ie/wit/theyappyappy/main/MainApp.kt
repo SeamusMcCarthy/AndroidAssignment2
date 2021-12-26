@@ -1,9 +1,8 @@
 package ie.wit.theyappyappy.main
 
 import android.app.Application
-import ie.wit.theyappyappy.models.WalkJSONStore
-import ie.wit.theyappyappy.models.WalkMemStore
 import ie.wit.theyappyappy.models.WalkStore
+import ie.wit.theyappyappy.room.WalkStoreRoom
 import timber.log.Timber
 import timber.log.Timber.i
 
@@ -14,7 +13,8 @@ class MainApp: Application() {
     override fun onCreate() {
         super.onCreate()
         Timber.plant(Timber.DebugTree())
-        walks = WalkJSONStore(applicationContext)
+//        walks = WalkJSONStore(applicationContext)
+        walks = WalkStoreRoom(applicationContext)
         i("TheYappyAppy started")
     }
 }

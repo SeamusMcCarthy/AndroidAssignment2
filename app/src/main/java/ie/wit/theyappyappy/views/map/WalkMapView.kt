@@ -1,47 +1,56 @@
-package ie.wit.theyappyappy.activities
+package ie.wit.theyappyappy.views.map
 
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
-import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
-import ie.wit.theyappyappy.R
+import com.squareup.picasso.Picasso
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import ie.wit.theyappyappy.databinding.ActivityWalkMapsBinding
 import ie.wit.theyappyappy.databinding.ContentWalkMapsBinding
 import ie.wit.theyappyappy.main.MainApp
+import ie.wit.theyappyappy.models.WalkModel
+import org.wit.placemark.views.map.WalkMapPresenter
 
-class WalkMapsActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListener {
+class WalkMapView : AppCompatActivity() , GoogleMap.OnMarkerClickListener{
 
-//    private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityWalkMapsBinding
     private lateinit var contentBinding: ContentWalkMapsBinding
-    lateinit var map: GoogleMap
     lateinit var app: MainApp
-
-
+    lateinit var presenter: WalkMapPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         app = application as MainApp
-
         binding = ActivityWalkMapsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
 
-        contentBinding = ContentWalkMapsBinding.bind(binding.root)
-        contentBinding.mapView.onCreate(savedInstanceState)
-        contentBinding.mapView.getMapAsync {
-            map = it
-            configureMap()
-        }
+        presenter = WalkMapPresenter(this)
 
+        contentBinding = ContentWalkMapsBinding.bind(binding.root)
+
+        contentBinding.mapView.onCreate(savedInstanceState)
+        contentBinding.mapView.getMapAsync{
+            GlobalScope.launch(Dispatchers.Main) {
+                presenter.doPopulateMap(it)
+            }
+        }
+    }
+    override fun onMarkerClick(marker: Marker): Boolean {
+        GlobalScope.launch(Dispatchers.Main) {
+            presenter.doMarkerSelected(marker)
+        }
+        return true
+    }
+    fun showWalk(walk: WalkModel) {
+        contentBinding.currentTitle.text = walk.title
+        contentBinding.currentDescription.text = walk.description
+        Picasso.get()
+            .load(walk.image)
+            .into(contentBinding.imageView2)
     }
 
     override fun onDestroy() {
@@ -68,22 +77,4 @@ class WalkMapsActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListener {
         super.onSaveInstanceState(outState)
         contentBinding.mapView.onSaveInstanceState(outState)
     }
-
-    fun configureMap() {
-        map.uiSettings.isZoomControlsEnabled = true
-        map.setOnMarkerClickListener(this)
-        app.walks.findAll().forEach {
-            val loc = LatLng(it.lat, it.lng)
-            val options = MarkerOptions().title(it.title).position(loc)
-            map.addMarker(options).tag = it.id
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, it.zoom))
-        }
-
-    }
-
-    override fun onMarkerClick(marker: Marker): Boolean {
-        contentBinding.currentTitle.text = marker.title
-        return false
-    }
-
 }
