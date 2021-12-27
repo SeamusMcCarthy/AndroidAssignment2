@@ -4,13 +4,21 @@
 
     <item
         android:id="@+id/item_add"
-        android:icon="@android:drawable/ic_menu_add"
+        android:textColor="#000"
         android:title="@string/menu_addWalk"
-        app:showAsAction="always" />
+        app:showAsAction="never"
+        />
 
     <item
         android:id="@+id/item_map"
-        android:icon="@android:drawable/ic_menu_mapmode"
-        android:title="All"
-        app:showAsAction="always"/>
+        android:textColor="#000"
+        android:title="@string/menu_showMap"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/item_logout"
+        android:title="@string/menu_logout"
+        android:textColor="#000"
+        android:visible="true"
+        app:showAsAction="never" />
 </menu>

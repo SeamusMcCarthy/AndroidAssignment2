@@ -64,7 +64,7 @@ class WalkListView : AppCompatActivity(), WalkListener {
         }
         val touchHelper= ItemTouchHelper(swipeGesture)
         touchHelper.attachToRecyclerView(binding.recyclerView)
-        
+
         loadWalks()
     }
 
@@ -77,6 +77,7 @@ class WalkListView : AppCompatActivity(), WalkListener {
         when (item.itemId) {
             R.id.item_add -> { presenter.doAddWalk() }
             R.id.item_map -> { presenter.doShowWalksMap() }
+            R.id.item_logout -> { presenter.doLogout() }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -89,7 +90,6 @@ class WalkListView : AppCompatActivity(), WalkListener {
     override fun onResume() {
         super.onResume()
         loadWalks()
-//        binding.recyclerView.adapter?.notifyDataSetChanged()
         Timber.i("recyclerView onResume")
 
     }

@@ -3,9 +3,11 @@ package ie.wit.theyappyappy.views.walklist
 import android.content.Intent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import com.google.firebase.auth.FirebaseAuth
 import ie.wit.theyappyappy.views.walk.WalkView
 import ie.wit.theyappyappy.main.MainApp
 import ie.wit.theyappyappy.models.WalkModel
+import ie.wit.theyappyappy.views.login.LoginView
 import ie.wit.theyappyappy.views.map.WalkMapView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -22,6 +24,8 @@ class WalkListPresenter(val view: WalkListView) {
         registerMapCallback()
         registerRefreshCallback()
     }
+
+    var auth: FirebaseAuth = FirebaseAuth.getInstance()
 
     suspend fun getWalks() = app.walks.findAll()
 
@@ -48,6 +52,12 @@ class WalkListPresenter(val view: WalkListView) {
 
     fun doAddWalk() {
         val launcherIntent = Intent(view, WalkView::class.java)
+        refreshIntentLauncher.launch(launcherIntent)
+    }
+
+    fun doLogout() {
+        auth.signOut()
+        val launcherIntent = Intent(view, LoginView::class.java)
         refreshIntentLauncher.launch(launcherIntent)
     }
 
