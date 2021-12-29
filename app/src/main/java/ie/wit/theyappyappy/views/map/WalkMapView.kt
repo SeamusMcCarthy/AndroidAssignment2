@@ -12,7 +12,6 @@ import ie.wit.theyappyappy.databinding.ActivityWalkMapsBinding
 import ie.wit.theyappyappy.databinding.ContentWalkMapsBinding
 import ie.wit.theyappyappy.main.MainApp
 import ie.wit.theyappyappy.models.WalkModel
-import org.wit.placemark.views.map.WalkMapPresenter
 
 class WalkMapView : AppCompatActivity() , GoogleMap.OnMarkerClickListener{
 

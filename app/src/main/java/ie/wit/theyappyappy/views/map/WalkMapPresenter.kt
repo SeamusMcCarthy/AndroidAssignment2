@@ -1,4 +1,4 @@
-package org.wit.placemark.views.map
+package ie.wit.theyappyappy.views.map
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
