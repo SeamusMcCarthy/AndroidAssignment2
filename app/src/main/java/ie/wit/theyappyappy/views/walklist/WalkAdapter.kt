@@ -35,7 +35,10 @@ class WalkAdapter constructor(private var walks: List<WalkModel>,
         fun bind(walk: WalkModel, listener: WalkListener) {
             binding.walkTitle.text = walk.title
             binding.description.text = walk.description
-            Picasso.get().load(walk.image).resize(200,200).into(binding.imageIcon)
+            if (walk.image != "") {
+                Picasso.get().load(walk.image).resize(200,200).into(binding.imageIcon)
+            }
+
             binding.root.setOnClickListener { listener.onWalkClick(walk) }
         }
     }

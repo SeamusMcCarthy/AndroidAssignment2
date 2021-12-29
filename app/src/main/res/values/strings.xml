@@ -4,7 +4,7 @@
     <string name="button_saveWalk">Save Walk</string>
     <string name="hint_walkTitle">Walk Title</string>
     <string name="hint_walkDescription">Description </string>
-    <string name="menu_addWalk">Add</string>
+    <string name="menu_addWalk">Add Walk</string>
     <string name="menu_cancelWalk">Cancel</string>
     <string name="enter_title">Please Enter a title</string>
     <string name="button_addImage">Add Image</string>
@@ -38,5 +38,8 @@
 
     <string name="menu_saveWalk">Save</string>
     <string name="menu_deleteWalk">Delete</string>
-
+    <string name="title_activity_login">Sign Up or Log In</string>
+    <string name="menu_showMap">Show Map</string>
+    <string name="menu_logout">Logout</string>
+    <string name="log_in">Log In</string>
 </resources>

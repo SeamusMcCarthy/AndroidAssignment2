@@ -9,13 +9,15 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 @Entity
 data class WalkModel(@PrimaryKey(autoGenerate = true)var id: Long = 0,
+                     var fbId: String = "",
                      var title: String = "",
                      var description: String = "",
                      var type: String = "",
                      var length: Int = 0,
                      var bins_provided: String = "",
                      var lead_required: String = "",
-                     var image: Uri = Uri.EMPTY,
+//                     var image: Uri = Uri.EMPTY,
+                     var image: String = "",
                      var lat : Double = 0.0,
                      var lng: Double = 0.0,
                      var zoom: Float = 0f) : Parcelable

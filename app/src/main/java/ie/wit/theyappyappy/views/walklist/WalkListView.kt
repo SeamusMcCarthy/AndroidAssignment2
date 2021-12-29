@@ -8,18 +8,14 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ie.wit.theyappyappy.R
-//import ie.wit.theyappyappy.views.walklist.WalkAdapter
-//import ie.wit.theyappyappy.views.walklist.WalkListener
 import ie.wit.theyappyappy.databinding.ActivityWalkListBinding
 import ie.wit.theyappyappy.helpers.GestureHelpers
 import ie.wit.theyappyappy.main.MainApp
 import ie.wit.theyappyappy.models.WalkModel
-//import ie.wit.theyappyappy.views.walklist.WalkListPresenter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import timber.log.Timber
-import timber.log.Timber.i
+
 
 class WalkListView : AppCompatActivity(), WalkListener {
 
@@ -64,7 +60,7 @@ class WalkListView : AppCompatActivity(), WalkListener {
         }
         val touchHelper= ItemTouchHelper(swipeGesture)
         touchHelper.attachToRecyclerView(binding.recyclerView)
-        
+
         loadWalks()
     }
 
@@ -77,27 +73,25 @@ class WalkListView : AppCompatActivity(), WalkListener {
         when (item.itemId) {
             R.id.item_add -> { presenter.doAddWalk() }
             R.id.item_map -> { presenter.doShowWalksMap() }
+            R.id.item_logout -> { GlobalScope.launch(Dispatchers.IO) {
+                presenter.doLogout()
+            } }
         }
         return super.onOptionsItemSelected(item)
     }
 
     override fun onWalkClick(walk: WalkModel) {
         presenter.doEditWalk(walk)
-
     }
 
     override fun onResume() {
         super.onResume()
         loadWalks()
-//        binding.recyclerView.adapter?.notifyDataSetChanged()
-        Timber.i("recyclerView onResume")
-
     }
 
     private fun loadWalks() {
         GlobalScope.launch(Dispatchers.Main) {
             binding.recyclerView.adapter = WalkAdapter(presenter.getWalks(), this@WalkListView)
-            i("In LoadWalks and size is : " + presenter.getWalks().size)
         }
 
     }

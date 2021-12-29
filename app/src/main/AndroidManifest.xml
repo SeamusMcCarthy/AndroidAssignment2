@@ -28,6 +28,12 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
+        <activity android:name=".views.login.LoginView"
+            android:label="@string/title_activity_login"
+            android:exported="true"
+            android:theme="@style/Theme.TheYappyAppy.NoActionBar">
+        </activity>
+
         <activity
             android:name=".views.editlocation.EditLocationView"
             android:exported="false"
@@ -42,15 +48,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".activities.RegisterActivity"
-            android:exported="true" />
+
         <activity
             android:name=".views.walklist.WalkListView"
             android:exported="true" />
-        <activity
-            android:name=".activities.LoginActivity"
-            android:exported="true" />
+
         <activity
             android:name=".views.walk.WalkView"
             android:label="@string/add_walk" />

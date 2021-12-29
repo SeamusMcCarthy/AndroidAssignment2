@@ -147,16 +147,17 @@ class WalkView : AppCompatActivity() {
             binding.radioLeadNo.isChecked = true
         }
 
-
+        if (walk.image != "") {
         Picasso.get()
             .load(walk.image)
             .into(binding.walkImage)
-        if (walk.image != Uri.EMPTY) {
+
             binding.chooseImage.setText(R.string.change_walkImage)
         }
     }
 
-    fun updateImage(image: Uri){
+
+    fun updateImage(image: String){
         i("Image updated")
         Picasso.get()
             .load(image)

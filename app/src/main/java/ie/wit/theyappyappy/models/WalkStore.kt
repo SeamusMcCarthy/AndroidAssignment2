@@ -6,4 +6,5 @@ interface WalkStore {
     suspend fun update(walk: WalkModel)
     suspend fun delete(walk: WalkModel)
     suspend fun findById(id:Long) : WalkModel?
+    suspend fun clear()
 }

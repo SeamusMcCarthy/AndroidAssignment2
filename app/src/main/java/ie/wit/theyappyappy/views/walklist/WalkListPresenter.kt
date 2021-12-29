@@ -3,9 +3,11 @@ package ie.wit.theyappyappy.views.walklist
 import android.content.Intent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import com.google.firebase.auth.FirebaseAuth
 import ie.wit.theyappyappy.views.walk.WalkView
 import ie.wit.theyappyappy.main.MainApp
 import ie.wit.theyappyappy.models.WalkModel
+import ie.wit.theyappyappy.views.login.LoginView
 import ie.wit.theyappyappy.views.map.WalkMapView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -23,31 +25,28 @@ class WalkListPresenter(val view: WalkListView) {
         registerRefreshCallback()
     }
 
+    var auth: FirebaseAuth = FirebaseAuth.getInstance()
+
     suspend fun getWalks() = app.walks.findAll()
 
     suspend fun deleteWalk(walk: WalkModel) {
-        i("In Delete function - Walk Title = " + walk.title)
-        try {
-            app.walks.delete(walk)
-        } catch (e: Exception) {
-            i("Problem with delete : " + e.message )
-        }
-
+        app.walks.delete(walk)
     }
 
     suspend fun createWalk(walk: WalkModel) {
-        i("In Create function - Walk Title = " + walk.title)
-        try {
-            walk.id = 0
-            app.walks.create(walk)
-        } catch (e: Exception) {
-            i("Problem with create : " + e.message )
-        }
-
+        walk.id = 0
+        app.walks.create(walk)
     }
 
     fun doAddWalk() {
         val launcherIntent = Intent(view, WalkView::class.java)
+        refreshIntentLauncher.launch(launcherIntent)
+    }
+
+    suspend fun doLogout() {
+        FirebaseAuth.getInstance().signOut()
+        app.walks.clear()
+        val launcherIntent = Intent(view, LoginView::class.java)
         refreshIntentLauncher.launch(launcherIntent)
     }
 
@@ -61,6 +60,7 @@ class WalkListPresenter(val view: WalkListView) {
         val launcherIntent = Intent(view, WalkMapView::class.java)
         refreshIntentLauncher.launch(launcherIntent)
     }
+
     private fun registerRefreshCallback() {
         refreshIntentLauncher =
             view.registerForActivityResult(ActivityResultContracts.StartActivityForResult())

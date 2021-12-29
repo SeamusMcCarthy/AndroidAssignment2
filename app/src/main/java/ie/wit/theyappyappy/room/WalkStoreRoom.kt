@@ -37,6 +37,6 @@ class WalkStoreRoom(val context: Context) : WalkStore {
         dao.deleteWalk(walk)
     }
 
-    fun clear() {
+    override suspend fun clear() {
     }
 }

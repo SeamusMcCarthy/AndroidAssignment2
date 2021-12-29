@@ -113,7 +113,7 @@ class WalkPresenter(private val view: WalkView) {
                     AppCompatActivity.RESULT_OK -> {
                         if (result.data != null) {
                             Timber.i("Got Result ${result.data!!.data}")
-                            walk.image = result.data!!.data!!
+                            walk.image = result.data!!.data!!.toString()
                             view.updateImage(walk.image)
                         }
                     }
@@ -131,7 +131,6 @@ class WalkPresenter(private val view: WalkView) {
                         if (result.data != null) {
                             Timber.i("Got Location ${result.data.toString()}")
                             val location = result.data!!.extras?.getParcelable<Location>("location")!!
-                            Timber.i("Location == $location")
                             walk.lat = location.lat
                             walk.lng = location.lng
                             walk.zoom = location.zoom
@@ -150,7 +149,6 @@ class WalkPresenter(private val view: WalkView) {
     fun locationUpdate(lat: Double, lng: Double) {
         walk.lat = lat
         walk.lng = lng
-        i("lat & lng " + lat + ' ' + lng)
         walk.zoom = 15f
         map?.clear()
         map?.uiSettings?.setZoomControlsEnabled(true)
@@ -161,7 +159,6 @@ class WalkPresenter(private val view: WalkView) {
     }
 
     private fun doPermissionLauncher() {
-        i("permission check called")
         requestPermissionLauncher =
             view.registerForActivityResult(ActivityResultContracts.RequestPermission())
             { isGranted: Boolean ->
@@ -175,9 +172,7 @@ class WalkPresenter(private val view: WalkView) {
 
     @SuppressLint("MissingPermission")
     fun doSetCurrentLocation() {
-        i("setting location from doSetLocation")
         locationService.lastLocation.addOnSuccessListener {
-            i("Last location : " + it.latitude + ' ' + it.longitude)
             locationUpdate(it.latitude, it.longitude)
         }
     }
