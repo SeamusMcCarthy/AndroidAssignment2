@@ -43,4 +43,8 @@ class WalkMemStore : WalkStore {
         val foundWalk: WalkModel? = walks.find { it.id == id }
         return foundWalk
     }
+
+    override suspend fun clear(){
+        walks.clear()
+    }
 }

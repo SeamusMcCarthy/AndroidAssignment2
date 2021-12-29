@@ -113,7 +113,7 @@ class WalkPresenter(private val view: WalkView) {
                     AppCompatActivity.RESULT_OK -> {
                         if (result.data != null) {
                             Timber.i("Got Result ${result.data!!.data}")
-                            walk.image = result.data!!.data!!
+                            walk.image = result.data!!.data!!.toString()
                             view.updateImage(walk.image)
                         }
                     }

@@ -55,8 +55,12 @@ class WalkListPresenter(val view: WalkListView) {
         refreshIntentLauncher.launch(launcherIntent)
     }
 
-    fun doLogout() {
-        auth.signOut()
+    suspend fun doLogout() {
+//        auth.signOut()
+//        val launcherIntent = Intent(view, LoginView::class.java)
+//        refreshIntentLauncher.launch(launcherIntent)
+        FirebaseAuth.getInstance().signOut()
+        app.walks.clear()
         val launcherIntent = Intent(view, LoginView::class.java)
         refreshIntentLauncher.launch(launcherIntent)
     }

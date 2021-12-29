@@ -77,7 +77,9 @@ class WalkListView : AppCompatActivity(), WalkListener {
         when (item.itemId) {
             R.id.item_add -> { presenter.doAddWalk() }
             R.id.item_map -> { presenter.doShowWalksMap() }
-            R.id.item_logout -> { presenter.doLogout() }
+            R.id.item_logout -> { GlobalScope.launch(Dispatchers.IO) {
+                presenter.doLogout()
+            } }
         }
         return super.onOptionsItemSelected(item)
     }

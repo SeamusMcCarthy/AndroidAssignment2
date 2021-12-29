@@ -41,4 +41,5 @@
     <string name="title_activity_login">Sign Up or Log In</string>
     <string name="menu_showMap">Show Map</string>
     <string name="menu_logout">Logout</string>
+    <string name="log_in">Log In</string>
 </resources>

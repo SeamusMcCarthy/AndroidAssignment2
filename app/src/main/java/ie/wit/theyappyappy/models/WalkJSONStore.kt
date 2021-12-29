@@ -84,6 +84,10 @@ class WalkJSONStore(private val context: Context) : WalkStore {
     private fun logAll() {
         walks.forEach { Timber.i("$it") }
     }
+
+    override suspend fun clear(){
+        walks.clear()
+    }
 }
 
 class UriParser : JsonDeserializer<Uri>,JsonSerializer<Uri> {
