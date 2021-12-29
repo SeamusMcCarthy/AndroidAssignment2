@@ -30,24 +30,12 @@ class WalkListPresenter(val view: WalkListView) {
     suspend fun getWalks() = app.walks.findAll()
 
     suspend fun deleteWalk(walk: WalkModel) {
-        i("In Delete function - Walk Title = " + walk.title)
-        try {
-            app.walks.delete(walk)
-        } catch (e: Exception) {
-            i("Problem with delete : " + e.message )
-        }
-
+        app.walks.delete(walk)
     }
 
     suspend fun createWalk(walk: WalkModel) {
-        i("In Create function - Walk Title = " + walk.title)
-        try {
-            walk.id = 0
-            app.walks.create(walk)
-        } catch (e: Exception) {
-            i("Problem with create : " + e.message )
-        }
-
+        walk.id = 0
+        app.walks.create(walk)
     }
 
     fun doAddWalk() {
@@ -56,9 +44,6 @@ class WalkListPresenter(val view: WalkListView) {
     }
 
     suspend fun doLogout() {
-//        auth.signOut()
-//        val launcherIntent = Intent(view, LoginView::class.java)
-//        refreshIntentLauncher.launch(launcherIntent)
         FirebaseAuth.getInstance().signOut()
         app.walks.clear()
         val launcherIntent = Intent(view, LoginView::class.java)
@@ -75,6 +60,7 @@ class WalkListPresenter(val view: WalkListView) {
         val launcherIntent = Intent(view, WalkMapView::class.java)
         refreshIntentLauncher.launch(launcherIntent)
     }
+
     private fun registerRefreshCallback() {
         refreshIntentLauncher =
             view.registerForActivityResult(ActivityResultContracts.StartActivityForResult())

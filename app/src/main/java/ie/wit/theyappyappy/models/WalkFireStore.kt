@@ -43,7 +43,10 @@ class WalkFireStore(val context: Context) : WalkStore {
             foundWalk.title = walk.title
             foundWalk.description = walk.description
             foundWalk.image = walk.image
-//            foundWalk.location = placemark.location
+            foundWalk.lead_required = walk.lead_required
+            foundWalk.bins_provided = walk.bins_provided
+            foundWalk.length = walk.length
+            foundWalk.type = walk.type
             foundWalk.lat = walk.lat
             foundWalk.lng = walk.lng
             foundWalk.zoom = walk.zoom
@@ -90,7 +93,7 @@ class WalkFireStore(val context: Context) : WalkStore {
         if (walk.image != "") {
             val fileName = File(walk.image)
             val imageName = fileName.getName()
-            i("Image name = " + imageName)
+
             var imageRef = st.child(userId + '/' + imageName)
             val baos = ByteArrayOutputStream()
             val bitmap = readImageFromPath(context, walk.image)

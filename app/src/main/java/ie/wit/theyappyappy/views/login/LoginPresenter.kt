@@ -26,8 +26,6 @@ class LoginPresenter (val view: LoginView)  {
         view.showProgress()
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(view!!) { task ->
             if (task.isSuccessful) {
-//                val launcherIntent = Intent(view, WalkListView::class.java)
-//                loginIntentLauncher.launch(launcherIntent)
                 if (fireStore != null) {
                     fireStore!!.fetchWalks {
                         view?.hideProgress()
