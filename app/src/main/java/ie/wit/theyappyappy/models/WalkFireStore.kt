@@ -32,7 +32,7 @@ class WalkFireStore(val context: Context) : WalkStore {
             walk.fbId = key
             walks.add(walk)
             db.child("users").child(userId).child("walks").child(key).setValue(walk)
-//            updateImage(walk)
+            updateImage(walk)
 
         }
     }
@@ -79,6 +79,7 @@ class WalkFireStore(val context: Context) : WalkStore {
             }
         }
         userId = FirebaseAuth.getInstance().currentUser!!.uid
+        st = FirebaseStorage.getInstance().reference
         db = FirebaseDatabase.getInstance().reference
         walks.clear()
         db.child("users").child(userId).child("walks")
@@ -89,7 +90,7 @@ class WalkFireStore(val context: Context) : WalkStore {
         if (walk.image != "") {
             val fileName = File(walk.image)
             val imageName = fileName.getName()
-
+            i("Image name = " + imageName)
             var imageRef = st.child(userId + '/' + imageName)
             val baos = ByteArrayOutputStream()
             val bitmap = readImageFromPath(context, walk.image)

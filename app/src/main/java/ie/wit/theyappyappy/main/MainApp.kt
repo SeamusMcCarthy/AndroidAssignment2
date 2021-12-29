@@ -9,14 +9,11 @@ import timber.log.Timber.i
 
 class MainApp: Application() {
 
-//    lateinit var walks: WalkStore
     lateinit var walks: WalkStore
 
     override fun onCreate() {
         super.onCreate()
         Timber.plant(Timber.DebugTree())
-//        walks = WalkJSONStore(applicationContext)
-//        walks = WalkStoreRoom(applicationContext)
         walks = WalkFireStore(applicationContext)
         i("TheYappyAppy started")
     }
