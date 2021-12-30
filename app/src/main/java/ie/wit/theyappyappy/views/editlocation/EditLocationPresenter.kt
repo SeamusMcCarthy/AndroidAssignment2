@@ -25,6 +25,7 @@ class EditLocationPresenter (val view: EditLocationView) {
             .position(loc)
         map.addMarker(options)
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, location.zoom))
+        map.uiSettings.setZoomControlsEnabled(true)
         map.setOnMarkerDragListener(view)
         map.setOnMarkerClickListener(view)
     }
