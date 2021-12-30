@@ -26,6 +26,11 @@ class WalkFireStore(val context: Context) : WalkStore {
         return foundWalk
     }
 
+    override suspend fun findByFbId(fbid: String): WalkModel? {
+        val foundWalk: WalkModel? = walks.find { w -> w.fbId == fbid }
+        return foundWalk
+    }
+
     override suspend fun create(walk: WalkModel) {
         val key = db.child("users").child(userId).child("walks").push().key
         key?.let {

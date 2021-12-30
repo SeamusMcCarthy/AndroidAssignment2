@@ -3,7 +3,7 @@ package ie.wit.theyappyappy.main
 import android.app.Application
 import ie.wit.theyappyappy.models.WalkFireStore
 import ie.wit.theyappyappy.models.WalkStore
-import ie.wit.theyappyappy.room.WalkStoreRoom
+//import ie.wit.theyappyappy.room.WalkStoreRoom
 import timber.log.Timber
 import timber.log.Timber.i
 
