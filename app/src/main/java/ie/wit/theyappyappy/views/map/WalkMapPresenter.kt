@@ -21,14 +21,15 @@ class WalkMapPresenter(val view: WalkMapView) {
         app.walks.findAll().forEach {
             val loc = LatLng(it.lat, it.lng)
             val options = MarkerOptions().title(it.title).position(loc)
-            map.addMarker(options)?.tag = it.id
+            map.addMarker(options)?.tag = it.fbId
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, it.zoom))
         }
     }
 
     suspend fun doMarkerSelected(marker: Marker) {
-        val tag = marker.tag as Long
-        val walk = app.walks.findById(tag)
+//        val tag = marker.tag as Long
+        val tag = marker.tag as String
+        val walk = app.walks.findByFbId(tag)
         if (walk != null) view.showWalk(walk)
     }
 }
